@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+ 
+  <groupId>com.wordpress.marianbuenosayres</groupId>  
+  <artifactId>jBPM6-Developer-Guide</artifactId>
+  <name>jBPM6 Developer Guide</name>
+  <version>1.0-SNAPSHOT</version>
+  <url>http://marianbuenosayres.wordpress.com</url>
+  <packaging>pom</packaging>
+  <properties>
+    <kie.version>6.0.0.Final</kie.version>
+    <hibernate.version>4.2.0.Final</hibernate.version>
+  </properties>
+  <modules>
+    <module>chapter-02</module>
+    <!--module>chapter-03</module>
+    <module>chapter-05</module>
+    <module>chapter-06</module>
+    <module>chapter-07</module>
+    <module>chapter-08</module>
+    <module>chapter-09</module>
+    <module>chapter-10</module-->
+  </modules>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <configuration>
+          <source>1.6</source>
+          <target>1.6</target>
+        </configuration>
+      </plugin>
+    </plugins>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-compiler-plugin</artifactId>
+          <version>2.5.1</version>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+  </build>
+
+  <repositories>
+    <repository>
+      <id>jboss-repo</id>
+      <url>http://repository.jboss.org/nexus/content/groups/public/</url>
+    </repository>
+    <repository>
+      <url>http://repo1.maven.org/maven2/</url>
+      <id>central</id>
+      <layout>default</layout>
+    </repository>
+  </repositories>
+</project>
+
