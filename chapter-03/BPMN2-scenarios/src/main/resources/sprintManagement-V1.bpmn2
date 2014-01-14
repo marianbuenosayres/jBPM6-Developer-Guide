@@ -87,7 +87,7 @@
       </bpmn2:dataOutputAssociation>
     </bpmn2:userTask>
     <bpmn2:sequenceFlow id="_2BFB9AF0-FFE2-4278-BF62-BE73AECC7275" drools:bgcolor="#000000" drools:selectable="true" sourceRef="_CA282A06-DE8C-4099-9BE2-8DF082FDA214" targetRef="_0589E506-D490-4A68-8FEF-61687F2B4DB9"/>
-    <bpmn2:task id="_BC0E2690-D3B8-4736-82FF-5CAB76327BD6" drools:selectable="true" name="Compile Project into Maven">
+    <bpmn2:task id="_BC0E2690-D3B8-4736-82FF-5CAB76327BD6" drools:taskName="compiler" drools:selectable="true" name="Compile Project into Maven">
       <bpmn2:incoming>_829870D3-31B4-425E-8571-7CB6B979F1C7</bpmn2:incoming>
       <bpmn2:outgoing>_A8209EA6-4873-4FA5-B65C-96519D01C50A</bpmn2:outgoing>
       <bpmn2:ioSpecification id="_toZ-qHvtEeOZd7D_h20OYw">
@@ -110,7 +110,7 @@
       </bpmn2:dataOutputAssociation>
     </bpmn2:task>
     <bpmn2:sequenceFlow id="_829870D3-31B4-425E-8571-7CB6B979F1C7" drools:bgcolor="#000000" drools:selectable="true" sourceRef="_0589E506-D490-4A68-8FEF-61687F2B4DB9" targetRef="_BC0E2690-D3B8-4736-82FF-5CAB76327BD6"/>
-    <bpmn2:task id="_A326E908-DFC3-4440-AAEE-0D64E4D4F1CD" drools:selectable="true" name="Deploy Compiled Project">
+    <bpmn2:task id="_A326E908-DFC3-4440-AAEE-0D64E4D4F1CD" drools:taskName="deployer" drools:selectable="true" name="Deploy Compiled Project">
       <bpmn2:incoming>_A8209EA6-4873-4FA5-B65C-96519D01C50A</bpmn2:incoming>
       <bpmn2:outgoing>_94F1F7B7-D634-4D75-AB09-77736BE65F46</bpmn2:outgoing>
       <bpmn2:ioSpecification id="_toZ-rXvtEeOZd7D_h20OYw">

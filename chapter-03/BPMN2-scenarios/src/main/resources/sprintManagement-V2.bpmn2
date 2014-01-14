@@ -88,7 +88,7 @@
         <bpmn2:targetRef>developerId</bpmn2:targetRef>
       </bpmn2:dataOutputAssociation>
     </bpmn2:userTask>
-    <bpmn2:task id="_BC0E2690-D3B8-4736-82FF-5CAB76327BD6" drools:selectable="true" name="Compile Project into Maven">
+    <bpmn2:task id="_BC0E2690-D3B8-4736-82FF-5CAB76327BD6" drools:taskName="compiler" drools:selectable="true" name="Compile Project into Maven">
       <bpmn2:incoming>_829870D3-31B4-425E-8571-7CB6B979F1C7</bpmn2:incoming>
       <bpmn2:outgoing>_B64D9168-B374-463F-82B4-17FE9E555128</bpmn2:outgoing>
       <bpmn2:ioSpecification id="_3S6bgHv1EeOZd7D_h20OYw">
@@ -111,7 +111,7 @@
       </bpmn2:dataOutputAssociation>
     </bpmn2:task>
     <bpmn2:sequenceFlow id="_829870D3-31B4-425E-8571-7CB6B979F1C7" drools:bgcolor="#000000" drools:selectable="true" sourceRef="_0589E506-D490-4A68-8FEF-61687F2B4DB9" targetRef="_BC0E2690-D3B8-4736-82FF-5CAB76327BD6"/>
-    <bpmn2:task id="_A326E908-DFC3-4440-AAEE-0D64E4D4F1CD" drools:selectable="true" name="Deploy Compiled Project">
+    <bpmn2:task id="_A326E908-DFC3-4440-AAEE-0D64E4D4F1CD" drools:taskName="deployer" drools:selectable="true" name="Deploy Compiled Project">
       <bpmn2:incoming>_85ADE4DE-9D35-4CEB-B859-3BB4B68B0B01</bpmn2:incoming>
       <bpmn2:outgoing>_94F1F7B7-D634-4D75-AB09-77736BE65F46</bpmn2:outgoing>
       <bpmn2:ioSpecification id="_3S6bhXv1EeOZd7D_h20OYw">
@@ -156,7 +156,7 @@
     <bpmn2:sequenceFlow id="_2A79B042-2E86-452D-9D91-85908C8AA5D2" drools:bgcolor="#000000" drools:selectable="true" name="no" sourceRef="_7836D0AD-C7B0-4768-A948-0654ABAFE9F1" targetRef="_E54B6A51-47B8-4C00-B3A1-F1DEE5322999">
       <bpmn2:conditionExpression xsi:type="bpmn2:tFormalExpression" id="_3S6bi3v1EeOZd7D_h20OYw" language="http://www.java.com/java"><![CDATA[return  KieFunctions.isFalse(compiled);]]></bpmn2:conditionExpression>
     </bpmn2:sequenceFlow>
-    <bpmn2:task id="_E54B6A51-47B8-4C00-B3A1-F1DEE5322999" drools:selectable="true" name="Notify Error to developer">
+    <bpmn2:task id="_E54B6A51-47B8-4C00-B3A1-F1DEE5322999" drools:taskName="notifier" drools:selectable="true" name="Notify Error to developer">
       <bpmn2:incoming>_2A79B042-2E86-452D-9D91-85908C8AA5D2</bpmn2:incoming>
       <bpmn2:outgoing>_A1559E01-4521-4ADF-B5E8-6874DD3EA179</bpmn2:outgoing>
       <bpmn2:ioSpecification id="_3S7CgHv1EeOZd7D_h20OYw">

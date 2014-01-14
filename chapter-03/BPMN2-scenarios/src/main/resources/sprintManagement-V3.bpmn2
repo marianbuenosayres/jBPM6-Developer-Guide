@@ -7,7 +7,7 @@
   <bpmn2:itemDefinition id="_compiledItem" structureRef="Boolean"/>
   <bpmn2:itemDefinition id="_deployedItem" structureRef="Boolean"/>
   <bpmn2:signal id="reqCancelled" name="reqCancelled"/>
-  <bpmn2:error id="java.lang.Exception" errorCode="java.lang.Exception"/>
+  <bpmn2:error id="java.lang.RuntimeException" errorCode="java.lang.RuntimeException"/>
   <bpmn2:itemDefinition id="__CA282A06-DE8C-4099-9BE2-8DF082FDA214_requirementInputItem" structureRef="String"/>
   <bpmn2:itemDefinition id="__CA282A06-DE8C-4099-9BE2-8DF082FDA214_pointsOutputItem" structureRef="Integer"/>
   <bpmn2:itemDefinition id="__0589E506-D490-4A68-8FEF-61687F2B4DB9_requirementInputItem" structureRef="String"/>
@@ -92,7 +92,7 @@
         <bpmn2:targetRef>developerId</bpmn2:targetRef>
       </bpmn2:dataOutputAssociation>
     </bpmn2:userTask>
-    <bpmn2:task id="_BC0E2690-D3B8-4736-82FF-5CAB76327BD6" drools:selectable="true" name="Compile Project into Maven">
+    <bpmn2:task id="_BC0E2690-D3B8-4736-82FF-5CAB76327BD6" drools:taskName="compiler" drools:selectable="true" name="Compile Project into Maven">
       <bpmn2:incoming>_829870D3-31B4-425E-8571-7CB6B979F1C7</bpmn2:incoming>
       <bpmn2:outgoing>_90B96285-7D2F-4E0F-9846-F56C32AD9916</bpmn2:outgoing>
       <bpmn2:ioSpecification id="_L2TNv3v7EeOZd7D_h20OYw">
@@ -115,7 +115,7 @@
       </bpmn2:dataOutputAssociation>
     </bpmn2:task>
     <bpmn2:sequenceFlow id="_829870D3-31B4-425E-8571-7CB6B979F1C7" drools:bgcolor="#000000" drools:selectable="true" sourceRef="_0589E506-D490-4A68-8FEF-61687F2B4DB9" targetRef="_BC0E2690-D3B8-4736-82FF-5CAB76327BD6"/>
-    <bpmn2:task id="_A326E908-DFC3-4440-AAEE-0D64E4D4F1CD" drools:selectable="true" name="Deploy Compiled Project">
+    <bpmn2:task id="_A326E908-DFC3-4440-AAEE-0D64E4D4F1CD" drools:taskName="deployer" drools:selectable="true" name="Deploy Compiled Project">
       <bpmn2:incoming>_90B96285-7D2F-4E0F-9846-F56C32AD9916</bpmn2:incoming>
       <bpmn2:outgoing>_94F1F7B7-D634-4D75-AB09-77736BE65F46</bpmn2:outgoing>
       <bpmn2:ioSpecification id="_L2TNxHv7EeOZd7D_h20OYw">
@@ -148,7 +148,7 @@
     </bpmn2:exclusiveGateway>
     <bpmn2:sequenceFlow id="_A1211449-CBB6-4693-9C33-5EAE485A3547" drools:bgcolor="#000000" drools:selectable="true" sourceRef="_CA282A06-DE8C-4099-9BE2-8DF082FDA214" targetRef="_60E15F3C-0D86-4C8E-B490-EA6A380C7134"/>
     <bpmn2:sequenceFlow id="_C6874080-CF2F-4B9A-85EA-9D2D60577A69" drools:bgcolor="#000000" drools:selectable="true" sourceRef="_60E15F3C-0D86-4C8E-B490-EA6A380C7134" targetRef="_0589E506-D490-4A68-8FEF-61687F2B4DB9"/>
-    <bpmn2:task id="_E54B6A51-47B8-4C00-B3A1-F1DEE5322999" drools:selectable="true" name="Notify Error to developer">
+    <bpmn2:task id="_E54B6A51-47B8-4C00-B3A1-F1DEE5322999" drools:taskName="notifier" drools:selectable="true" name="Notify Error to developer">
       <bpmn2:incoming>_15D5C2C9-C8FB-4FB3-83A3-2ABA7DA437E1</bpmn2:incoming>
       <bpmn2:outgoing>_A1559E01-4521-4ADF-B5E8-6874DD3EA179</bpmn2:outgoing>
       <bpmn2:ioSpecification id="_L2TNyXv7EeOZd7D_h20OYw">
@@ -186,7 +186,7 @@
       <bpmn2:outgoing>_72ADCFEE-17F9-4772-8DFB-A9565A56D022</bpmn2:outgoing>
       <bpmn2:signalEventDefinition id="_L2T0wHv7EeOZd7D_h20OYw" signalRef="reqCancelled"/>
     </bpmn2:intermediateCatchEvent>
-    <bpmn2:task id="_F3F5C295-8C01-4518-8E93-8D3ACE36CB35" drools:selectable="true" name="Notify Requirement Change to developer">
+    <bpmn2:task id="_F3F5C295-8C01-4518-8E93-8D3ACE36CB35" drools:taskName="notifier" drools:selectable="true" name="Notify Requirement Change to developer">
       <bpmn2:incoming>_72ADCFEE-17F9-4772-8DFB-A9565A56D022</bpmn2:incoming>
       <bpmn2:outgoing>_72E38D37-92CD-4A3B-82EB-C93BB8B9222D</bpmn2:outgoing>
       <bpmn2:ioSpecification id="_L2T0wXv7EeOZd7D_h20OYw">
@@ -218,11 +218,11 @@
     </bpmn2:endEvent>
     <bpmn2:boundaryEvent id="_DE44826C-0C64-4034-B42A-CD4CF6FEAF31" drools:bgcolor="#f5deb3" drools:selectable="true" drools:bordercolor="#a0522d" drools:boundaryca="false" name="" attachedToRef="_BC0E2690-D3B8-4736-82FF-5CAB76327BD6">
       <bpmn2:outgoing>_451D07BA-8084-493B-8823-5AF13CE92F00</bpmn2:outgoing>
-      <bpmn2:errorEventDefinition id="_L2T0ynv7EeOZd7D_h20OYw" drools:erefname="java.lang.Exception" errorRef="java.lang.Exception"/>
+      <bpmn2:errorEventDefinition id="_L2T0ynv7EeOZd7D_h20OYw" drools:erefname="java.lang.RuntimeException" errorRef="java.lang.RuntimeException"/>
     </bpmn2:boundaryEvent>
     <bpmn2:boundaryEvent id="_4FB453ED-BD48-4524-A5AB-9FE429E35DB2" drools:bgcolor="#f5deb3" drools:selectable="true" drools:bordercolor="#a0522d" drools:boundaryca="false" name="" attachedToRef="_A326E908-DFC3-4440-AAEE-0D64E4D4F1CD">
       <bpmn2:outgoing>_1864996C-8524-4188-8419-69309F905EAF</bpmn2:outgoing>
-      <bpmn2:errorEventDefinition id="_L2T0y3v7EeOZd7D_h20OYw" drools:erefname="java.lang.Exception" errorRef="java.lang.Exception"/>
+      <bpmn2:errorEventDefinition id="_L2T0y3v7EeOZd7D_h20OYw" drools:erefname="java.lang.RuntimeException" errorRef="java.lang.RuntimeException"/>
     </bpmn2:boundaryEvent>
   </bpmn2:process>
   <bpmndi:BPMNDiagram id="_L2T0zHv7EeOZd7D_h20OYw">
