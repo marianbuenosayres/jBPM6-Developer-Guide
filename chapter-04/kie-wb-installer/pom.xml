@@ -1,0 +1,177 @@
+<?xml version="1.0"?>
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"> 
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>com.wordpress.marianbuenosayres</groupId>
+    <artifactId>chapter-04</artifactId>
+    <version>1.0-SNAPSHOT</version>
+  </parent>
+  <artifactId>kie-wb-installer</artifactId>
+  <name>Kie Workbench Installer</name>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.jboss.as</groupId>
+      <artifactId>jboss-as-dist</artifactId>
+      <version>7.1.1.Final</version>
+      <type>zip</type>
+    </dependency>
+    <dependency>
+      <groupId>org.kie</groupId>
+      <artifactId>kie-wb-distribution-wars</artifactId>
+      <version>6.0.1.Final</version>
+      <classifier>jboss-as7</classifier>
+      <type>war</type>
+    </dependency>
+    <dependency>
+      <groupId>org.jbpm.dashboard</groupId>
+      <artifactId>jbpm-dashboard-distributions</artifactId>
+      <version>6.0.1.Final</version>
+      <classifier>jboss-as7</classifier>
+      <type>war</type>
+    </dependency>
+  </dependencies>
+
+  <profiles>
+    <profile>
+      <id>win</id>
+      <activation>
+        <os>
+          <family>windows</family>
+        </os>
+      </activation>
+      <properties>
+        <scriptFormat>bat</scriptFormat>
+      </properties>
+    </profile>
+    <profile>
+      <id>unix</id>
+      <activation>
+        <os>
+          <family>unix</family>
+        </os>
+      </activation>
+      <properties>
+        <scriptFormat>sh</scriptFormat>
+      </properties>
+    </profile>
+    <profile>
+      <id>mac</id>
+      <activation>
+        <os>
+          <family>mac</family>
+        </os>
+      </activation>
+      <properties>
+        <scriptFormat>sh</scriptFormat>
+      </properties>
+    </profile>
+  </profiles>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-antrun-plugin</artifactId>
+        <version>1.7</version>
+        <executions>
+          <execution>
+            <id>compile</id>
+            <phase>compile</phase>
+            <configuration>
+              <target>
+                <property name="jbosszippath" value="${org.jboss.as:jboss-as-dist:zip}"/>
+                <property name="kiewbwarpath" value="${org.kie:kie-wb-distribution-wars:war:jboss-as7}"/>
+                <property name="dashbuilderpath" value="${org.jbpm.dashboard:jbpm-dashboard-distributions:war:jboss-as7}"/>
+                <echo message="NAME = ${kiewbwarpath}"/>
+                <property name="jboss.dir" value="${project.build.directory}/jboss-as-7.1.1.Final"/>
+                <echo message="Installing JBoss Applicaton Server7 in target"/>
+                <mkdir dir="${project.build.directory}"/>
+                <unzip src="${jbosszippath}" dest="${project.build.directory}"/>
+                <copy file="${project.basedir}/src/main/resources/application-users.properties" 
+                      tofile="${jboss.dir}/standalone/configuration/application-users.properties" 
+                      overwrite="true" />
+                <copy file="${project.basedir}/src/main/resources/application-roles.properties" 
+                      tofile="${jboss.dir}/standalone/configuration/application-roles.properties" 
+                      overwrite="true" />
+                <copy file="${project.basedir}/src/main/resources/standalone-full.xml" 
+                      tofile="${jboss.dir}/standalone/configuration/standalone.xml" 
+                      overwrite="true" />
+                <!--mkdir dir="${jboss.dir}/jboss-as-7.1.1.Final/modules/org/apache/cxf/impl"/>
+                <mkdir dir="${jboss.dir}/jboss-as-7.1.1.Final/modules/org/apache/cxf/impl/main"/>
+                <copy todir="${jboss.dir}/jboss-as-7.1.1.Final/modules/org/apache/cxf/impl/main">
+                   <fileset dir="${jboss.dir}/jboss-as-7.1.1.Final/modules/org/apache/cxf/main"/>
+                </copy>
+                <copy file="${project.basedir}/src/test/resources/cxf-impl-module.xml" 
+                    tofile="${jboss.dir}/jboss-as-7.1.1.Final/modules/org/apache/cxf/impl/main/module.xml"
+                    overwrite="true"/>
+                <mkdir dir="${jboss.dir}/jboss-as-7.1.1.Final/modules/org/hibernate/commons-annotations"/>
+                <mkdir dir="${jboss.dir}/jboss-as-7.1.1.Final/modules/org/hibernate/commons-annotations/main"/>
+                <copy todir="${jboss.dir}/jboss-as-7.1.1.Final/modules/org/hibernate/commons-annotations/main">
+                   <fileset dir="${jboss.dir}/jboss-as-7.1.1.Final/modules/org/hibernate/main"/>
+                </copy>
+                <copy file="${project.basedir}/src/test/resources/commons-annotations-module.xml" 
+                    tofile="${jboss.dir}/jboss-as-7.1.1.Final/modules/org/hibernate/commons-annotations/main/module.xml"
+                    overwrite="true"/>
+                <copy file="${com.google.guava:guava:jar}"
+                    tofile="${jboss.dir}/jboss-as-7.1.1.Final/modules/com/google/guava/main/guava-11.0.2.jar"
+                    overwrite="true"/>
+                <delete file="${jboss.dir}/jboss-as-7.1.1.Final/modules/com/google/guava/main/guava-11.0.2.jar.index"/-->
+                <echo message="JBoss Application Server 7 installed in target"/>
+		<copy file="${kiewbwarpath}" tofile="${jboss.dir}/standalone/deployments/kie-wb.war" overwrite="true" />
+		<copy file="${dashbuilderpath}" tofile="${jboss.dir}/standalone/deployments/webdashbuilder.war" overwrite="true" />
+                <chmod perm="u+x" dir="${jboss.dir}/bin" includes="**/*.*" />
+              </target>
+            </configuration>
+            <goals>
+              <goal>run</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>exec-maven-plugin</artifactId>
+        <version>1.2.1</version>
+        <configuration>
+           <executable>${project.build.directory}/jboss-as-7.1.1.Final/bin/standalone.${scriptFormat}</executable>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-source-plugin</artifactId>
+        <configuration>
+          <target>1.6</target>
+          <source>1.6</source>
+        </configuration>
+      </plugin>
+      <plugin>
+        <!--  ensure that all generated files are deleted before _any_ run 
+              otherwise we get tests failing because of leftover's -->
+        <artifactId>maven-clean-plugin</artifactId>
+        <version>2.4.1</version>
+        <configuration>
+          <filesets>
+            <fileset>
+              <directory>${basedir}/.niogit</directory>
+            </fileset>
+            <fileset>
+              <directory>${basedir}/.index</directory>
+            </fileset>
+            <fileset>
+              <directory>${basedir}/.security</directory>
+            </fileset>
+            <fileset>
+              <directory>${basedir}/repositories</directory>
+            </fileset>
+          </filesets>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+
+</project>
+
