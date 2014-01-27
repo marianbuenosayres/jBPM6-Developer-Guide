@@ -270,6 +270,9 @@
           <module>com.wordpress.marianbuenosayres.showcase.FastCompiledUberfireDemoShowcase</module>
           <logLevel>INFO</logLevel>
           <compileSourcesArtifacts>
+            <compileSourcesArtifact>com.wordpress.marianbuenosayres:uberfire-demo-api</compileSourcesArtifact>
+            <compileSourcesArtifact>com.wordpress.marianbuenosayres:uberfire-demo-client</compileSourcesArtifact>
+
             <compileSourcesArtifact>org.uberfire:uberfire-commons</compileSourcesArtifact>
             <compileSourcesArtifact>org.uberfire:uberfire-js</compileSourcesArtifact>
             <compileSourcesArtifact>org.uberfire:uberfire-security-api</compileSourcesArtifact>
