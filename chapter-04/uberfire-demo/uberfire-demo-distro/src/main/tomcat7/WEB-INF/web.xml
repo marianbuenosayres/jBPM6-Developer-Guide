@@ -31,33 +31,22 @@
 
   <servlet-mapping>
     <servlet-name>UberFireServlet</servlet-name>
-    <url-pattern>/org.uberfire.UberfireShowcase/Uberfire.html</url-pattern>
+    <url-pattern>/com.wordpress.marianbuenosayres.showcase.UberfireDemoShowcase/demo.html</url-pattern>
   </servlet-mapping>
   
-  <servlet>
-    <servlet-name>GoogleGadget</servlet-name>
-    <servlet-class>org.uberfire.backend.server.impl.GoogleGadgetServlet</servlet-class>
-    <load-on-startup>1</load-on-startup>
-  </servlet>
-
-  <servlet-mapping>
-    <servlet-name>GoogleGadget</servlet-name>
-    <url-pattern>/org.uberfire.UberfireShowcase/google.gadget</url-pattern>
-  </servlet-mapping>
-
   <servlet>
     <servlet-name>UberFireImageServlet</servlet-name>
     <servlet-class>org.uberfire.server.UberfireImageServlet</servlet-class>
     <init-param>
       <param-name>org.uberfire.images.paths</param-name>
-      <param-value>/org.uberfire.UberfireShowcase</param-value>
+      <param-value>/com.wordpress.marianbuenosayres.showcase.UberfireDemoShowcase</param-value>
     </init-param>
     <load-on-startup>1</load-on-startup>
   </servlet>
 
   <servlet-mapping>
     <servlet-name>UberFireImageServlet</servlet-name>
-    <url-pattern>/org.uberfire.UberfireShowcase/uberFireImages/*</url-pattern>
+    <url-pattern>/com.wordpress.marianbuenosayres.showcase.UberfireDemoShowcase/uberFireImages/*</url-pattern>
   </servlet-mapping>
 
   <servlet>

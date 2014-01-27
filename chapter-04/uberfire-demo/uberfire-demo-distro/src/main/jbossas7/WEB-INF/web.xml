@@ -29,11 +29,7 @@
     </filter-class>
     <init-param>
       <param-name>org.uberfire.cookie.id</param-name>
-      <param-value>uf.showcase</param-value>
-    </init-param>
-    <init-param>
-      <param-name>org.uberfire.auth.scheme</param-name>
-      <param-value>org.uberfire.security.server.auth.JACCAuthenticationScheme</param-value>
+      <param-value>uberfire.demo</param-value>
     </init-param>
   </filter>
 
@@ -50,7 +46,7 @@
 
   <servlet-mapping>
     <servlet-name>UberFireServlet</servlet-name>
-    <url-pattern>/org.uberfire.UberfireShowcase/demo.html</url-pattern>
+    <url-pattern>/com.wordpress.marianbuenosayres.showcase.UberfireDemoShowcase/demo.html</url-pattern>
   </servlet-mapping>
 
   <servlet>
@@ -58,14 +54,14 @@
     <servlet-class>org.uberfire.server.UberfireImageServlet</servlet-class>
     <init-param>
       <param-name>org.uberfire.images.paths</param-name>
-      <param-value>/org.uberfire.UberfireShowcase</param-value>
+      <param-value>/com.wordpress.marianbuenosayres.showcase.UberfireDemoShowcase</param-value>
     </init-param>
     <load-on-startup>1</load-on-startup>
   </servlet>
 
   <servlet-mapping>
     <servlet-name>UberFireImageServlet</servlet-name>
-    <url-pattern>/org.uberfire.UberfireShowcase/uberFireImages/*</url-pattern>
+    <url-pattern>/com.wordpress.marianbuenosayres.showcase.UberfireDemoShowcase/uberFireImages/*</url-pattern>
   </servlet-mapping>
 
   <servlet>
