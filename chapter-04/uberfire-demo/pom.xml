@@ -13,16 +13,28 @@
 
   <properties>
     <uberfire.version>0.3.1.Final</uberfire.version>
-    <errai.version>2.4.1.Final</errai.version>
+    <errai.version>2.4.3.Final</errai.version>
   </properties>
 
   <modules>
     <module>uberfire-demo-api</module>
     <module>uberfire-demo-backend</module>
     <module>uberfire-demo-client</module>
-    <module>uberfire-demo-showcase</module>
-    <module>uberfire-demo-distro</module>
   </modules>
-    
+   
+  <profiles>
+    <profile>
+      <id>deployProfile</id>
+      <activation>
+        <property>
+          <name>deploy</name>
+        </property>
+      </activation>
+      <modules>
+        <module>jbpm-console-ng-showcase</module>
+        <module>jbpm-console-ng-distribution-wars</module>
+      </modules>
+    </profile>
+  </profiles>
 </project>
 

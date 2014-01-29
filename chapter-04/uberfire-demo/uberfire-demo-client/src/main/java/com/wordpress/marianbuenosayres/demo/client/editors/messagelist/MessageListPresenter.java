@@ -15,17 +15,20 @@ import org.uberfire.client.mvp.PlaceManager;
 import org.uberfire.client.mvp.UberView;
 import org.uberfire.mvp.Command;
 import org.uberfire.mvp.impl.DefaultPlaceRequest;
+import org.uberfire.lifecycle.OnOpen;
+import org.uberfire.lifecycle.OnFocus;
 import org.uberfire.workbench.model.menu.MenuFactory;
 import org.uberfire.workbench.model.menu.Menus;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.cellview.client.DataGrid;
+import com.google.gwt.view.client.HasData;
 import com.google.gwt.view.client.ListDataProvider;
 import com.wordpress.marianbuenosayres.demo.client.i18n.Constants;
 import com.wordpress.marianbuenosayres.api.service.DemoServiceEntryPoint;
 
 @Dependent
-@WorkbenchScreen(identifier = "Message List")
+@WorkbenchScreen(identifier = "uberFireDemo.MessageListScreen")
 public class MessageListPresenter {
 
     public interface MessageListView extends UberView<MessageListPresenter> {
@@ -55,7 +58,7 @@ public class MessageListPresenter {
 
     @WorkbenchPartTitle
     public String getTitle() {
-        return "Message List";
+        return "My Customized Message List";
     }
 
     @WorkbenchPartView
@@ -73,12 +76,22 @@ public class MessageListPresenter {
         }).getMessages();
     }
 
-    public void init() {
+    @OnOpen
+    public void onOpen() {
+        refreshMessages();
+    }
+
+    @OnFocus
+    public void onFocus() {
         refreshMessages();
     }
 
     public ListDataProvider<String> getDataProvider() {
         return dataProvider;
+    }
+
+    public void addDataDisplay(HasData<String> display) {
+        dataProvider.addDataDisplay(display);
     }
 
     public void refreshData() {
@@ -96,7 +109,7 @@ public class MessageListPresenter {
                 .respondsWith(new Command() {
                     @Override
                     public void execute() {
-                        placeManager.goTo( new DefaultPlaceRequest( "New Message" ) );
+                        placeManager.goTo( new DefaultPlaceRequest( "uberFireDemo.NewMessagePopup" ) );
                         
                     }
                 })

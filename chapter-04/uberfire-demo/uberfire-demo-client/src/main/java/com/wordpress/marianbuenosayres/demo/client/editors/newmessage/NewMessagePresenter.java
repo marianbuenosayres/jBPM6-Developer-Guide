@@ -11,12 +11,15 @@ import org.uberfire.client.annotations.WorkbenchPartTitle;
 import org.uberfire.client.annotations.WorkbenchPartView;
 import org.uberfire.client.annotations.WorkbenchPopup;
 import org.uberfire.client.mvp.UberView;
+import org.uberfire.lifecycle.OnStartup;
+import org.uberfire.mvp.PlaceRequest;
+import org.uberfire.workbench.events.BeforeClosePlaceEvent;
 
 import com.wordpress.marianbuenosayres.api.model.events.NewMessageEvent;
 import com.wordpress.marianbuenosayres.api.service.DemoServiceEntryPoint;
 
 @Dependent
-@WorkbenchPopup(identifier = "New Message")
+@WorkbenchPopup(identifier = "uberFireDemo.NewMessagePopup")
 public class NewMessagePresenter {
 
     public interface NewMessageView extends UberView<NewMessagePresenter> {
@@ -31,13 +34,22 @@ public class NewMessagePresenter {
     private Caller<DemoServiceEntryPoint> demoService;
     @Inject
     private Event<NewMessageEvent> newMsgEvent;
+    @Inject
+    private Event<BeforeClosePlaceEvent> closePlaceEvent;
+
+    private PlaceRequest place;
 
     public NewMessagePresenter() {
     }
 
+    @OnStartup
+    public void onStartup( final PlaceRequest place ) {
+        this.place = place;
+    }
+
     @WorkbenchPartTitle
     public String getTitle() {
-        return "New Message";
+        return "New Customized Message";
     }
 
     @WorkbenchPartView
@@ -55,8 +67,12 @@ public class NewMessagePresenter {
             public void callback( Void response ) {
                 //send event
                 newMsgEvent.fire(new NewMessageEvent( view.getMessage() ) );
+                close();
             }
         } ).sendMessage( message );
     }
 
+    public void close() {
+        closePlaceEvent.fire( new BeforeClosePlaceEvent( this.place ) );
+    }
 }

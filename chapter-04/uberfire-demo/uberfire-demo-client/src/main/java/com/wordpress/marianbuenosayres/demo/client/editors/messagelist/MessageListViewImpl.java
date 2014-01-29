@@ -1,5 +1,7 @@
 package com.wordpress.marianbuenosayres.demo.client.editors.messagelist;
 
+import java.util.Comparator;
+
 import javax.enterprise.context.Dependent;
 import javax.enterprise.event.Event;
 import javax.enterprise.event.Observes;
@@ -10,9 +12,12 @@ import org.jboss.errai.ui.shared.api.annotations.Templated;
 import org.uberfire.workbench.events.NotificationEvent;
 
 import com.github.gwtbootstrap.client.ui.Label;
+import com.google.gwt.cell.client.TextCell;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.cellview.client.DataGrid;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.cellview.client.Column;
+import com.google.gwt.user.cellview.client.ColumnSortEvent.ListHandler;
 import com.google.gwt.user.client.ui.LayoutPanel;
 import com.google.gwt.user.client.ui.RequiresResize;
 import com.wordpress.marianbuenosayres.demo.client.i18n.Constants;
@@ -34,6 +39,8 @@ public class MessageListViewImpl extends Composite implements MessageListPresent
     @DataField
     public DataGrid<String> messageListGrid;
 
+    private ListHandler<String> sortHandler;
+
     @Inject
     private Event<NotificationEvent> notification;
 
@@ -53,6 +60,32 @@ public class MessageListViewImpl extends Composite implements MessageListPresent
         listContainer.add( messageListGrid );
         // Set the message to display when the table is empty.
         messageListGrid.setEmptyTableWidget( new Label( constants.NoMessages() ) );
+
+        //Attach a column sort handler to the ListDataProvider to sort the list
+        sortHandler = new ListHandler<String>(presenter.getDataProvider().getList());
+        messageListGrid.addColumnSortHandler(sortHandler);
+
+        initTableColumns();
+
+        presenter.addDataDisplay(messageListGrid);
+    }
+
+    private void initTableColumns() {
+        Column<String, String> messageTextColumn = new Column<String, String>(new TextCell()) {
+            @Override
+            public String getValue(String string) {
+                return string;
+            }
+        };
+        messageTextColumn.setSortable(true);
+        sortHandler.setComparator(messageTextColumn, new Comparator<String>() {
+            @Override
+            public int compare(String o1, String o2) {
+                return o1.compareTo(o2);
+            }
+        });
+
+        messageListGrid.addColumn(messageTextColumn);
     }
 
     public void requestCreated( @Observes NewMessageEvent event ) {
