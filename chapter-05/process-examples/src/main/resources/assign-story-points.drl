@@ -1,0 +1,10 @@
+package com.wordpress.marianbuenosayres;
+
+rule "Init points"
+no-loop
+ruleflow-group "assign-story-points"
+when
+	req: String(length > 1)
+then
+	insert(new Integer(1));
+end
