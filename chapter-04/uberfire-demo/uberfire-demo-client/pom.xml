@@ -11,7 +11,7 @@
   <artifactId>uberfire-demo-client</artifactId>
   <packaging>jar</packaging>
 
-  <name>Uberfire Demo: Client</name>
+  <name>Chapter 04 :: Uberfire Demo: Client</name>
 
   <dependencies>
     <dependency>

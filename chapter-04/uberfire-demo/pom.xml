@@ -9,7 +9,7 @@
   </parent>
   <artifactId>uberfire-demo</artifactId>
   <packaging>pom</packaging>
-  <name>Uberfire Demo</name>
+  <name>Chapter 04 :: Uberfire Demo</name>
 
   <properties>
     <uberfire.version>0.3.1.Final</uberfire.version>

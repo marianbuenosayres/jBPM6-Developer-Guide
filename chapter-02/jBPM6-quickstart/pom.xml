@@ -9,7 +9,7 @@
     <version>1.0-SNAPSHOT</version>
   </parent>
   <artifactId>jBPM6-quickstart</artifactId>
-  <name>jBPM6 Quickstart</name>
+  <name>Chapter 02 :: jBPM6 Quickstart</name>
   <dependencies>
     <dependency>
       <groupId>junit</groupId>

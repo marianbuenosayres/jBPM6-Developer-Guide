@@ -9,7 +9,7 @@
     <version>1.0-SNAPSHOT</version>
   </parent>
   <artifactId>BPMN2-scenarios</artifactId>
-  <name>BPMN2 scenarios</name>
+  <name>Chapter 03 :: BPMN2 scenarios</name>
   
   <dependencies>
     <dependency>

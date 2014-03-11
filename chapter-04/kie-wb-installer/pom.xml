@@ -10,7 +10,7 @@
     <version>1.0-SNAPSHOT</version>
   </parent>
   <artifactId>kie-wb-installer</artifactId>
-  <name>Kie Workbench Installer</name>
+  <name>Chapter 04 :: Kie Workbench Installer</name>
 
   <dependencies>
     <dependency>

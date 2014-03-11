@@ -11,7 +11,7 @@
   <artifactId>uberfire-demo-backend</artifactId>
   <packaging>jar</packaging>
 
-  <name>Uberfire Demo: Backend</name>
+  <name>Chapter 04 :: Uberfire Demo: Backend</name>
 
   <dependencies>
     <dependency>

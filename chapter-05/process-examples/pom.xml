@@ -9,7 +9,7 @@
     <version>1.0-SNAPSHOT</version>
   </parent>
   <artifactId>process-examples</artifactId>
-  <name>Process Examples and tests</name>
+  <name>Chapter 05 :: Process Examples and tests</name>
   
   <dependencies>
     <dependency>
