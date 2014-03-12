@@ -68,11 +68,11 @@ public class HumanTaskSampleTest {
         Properties userGroups = new Properties();
         userGroups.setProperty("john", "developers");
         userGroups.setProperty("mary", "testers");
-        userGroups.setProperty("Administrator", "developers,testers");
+        userGroups.setProperty("Administrator", "Administrators,developers,testers");
         JBossUserGroupCallbackImpl userGroupCallback = new JBossUserGroupCallbackImpl(userGroups);
 
         //start taskService
-        TaskService taskService =HumanTaskServiceFactory.newTaskServiceConfigurator()
+        TaskService taskService = HumanTaskServiceFactory.newTaskServiceConfigurator()
             .entityManagerFactory(emf)
             .userGroupCallback(userGroupCallback)
             .getTaskService();
@@ -144,11 +144,14 @@ public class HumanTaskSampleTest {
         assertEquals(ProcessInstance.STATE_ACTIVE, instance.getState());
 
         //now that the requirement has bugs, there's a task assigned so john bugfixes the issue
-        List<TaskSummary> bugfixTasks = taskService.getTasksOwned("john", "en-UK");
+        List<TaskSummary> bugfixTasks = taskService.getTasksAssignedAsPotentialOwner("john", "en-UK");
         assertNotNull(bugfixTasks);
         assertEquals(1, bugfixTasks.size());
         TaskSummary bugfixTask = bugfixTasks.iterator().next();
 
+        System.out.println("=====> Status = " + bugfixTask.getStatus());
+
+        taskService.claim(bugfixTask.getId(), "john");
         taskService.start(bugfixTask.getId(), "john");
         Map<String, Object> results3 = new HashMap<String, Object>();
         req.resolveBug("bug 1", "bug fixed");
@@ -166,6 +169,7 @@ public class HumanTaskSampleTest {
         taskService.start(marysTask2.getId(), "mary");
 
         Map<String, Object> results4 = new HashMap<String, Object>();
+        results4.put("reqResult", req);
         taskService.complete(marysTask2.getId(), "mary", results4);
 
         assertEquals(ProcessInstance.STATE_COMPLETED, instance.getState());
