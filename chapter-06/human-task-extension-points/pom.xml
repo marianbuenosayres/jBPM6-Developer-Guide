@@ -12,6 +12,11 @@
   <name>Chapter 06 :: Human Task extension points</name>
 
   <dependencies>
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>human-task-components-api</artifactId>
+      <version>${project.version}</version>
+    </dependency>
     <!-- Test dependencies -->
     <dependency>
       <groupId>junit</groupId>
@@ -47,6 +52,11 @@
       <artifactId>jbpm-bpmn2</artifactId>
       <version>${kie.version}</version>
     </dependency>
+    <dependency>
+      <groupId>org.kie</groupId>
+      <artifactId>kie-ci</artifactId>
+      <version>${kie.version}</version>
+    </dependency>
     <!-- Task service dependency -->
     <dependency>
       <groupId>org.jbpm</groupId>
@@ -68,13 +78,13 @@
     <dependency>
       <groupId>org.hibernate</groupId>
       <artifactId>hibernate-entitymanager</artifactId>
-      <version>4.2.0.Final</version>
+      <version>4.2.3.Final</version>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.hibernate</groupId>
       <artifactId>hibernate-core</artifactId>
-      <version>4.2.0.Final</version>
+      <version>4.2.3.Final</version>
       <scope>test</scope>
     </dependency>
     <dependency>
