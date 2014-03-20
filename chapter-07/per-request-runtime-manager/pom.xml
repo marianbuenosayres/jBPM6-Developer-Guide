@@ -1,0 +1,102 @@
+<?xml version="1.0"?>
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"> 
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>com.wordpress.marianbuenosayres</groupId>
+    <artifactId>chapter-07</artifactId>
+    <version>1.0-SNAPSHOT</version>
+  </parent>
+  <artifactId>per-request-runtime-manager</artifactId>
+  <name>Chapter 07 :: Per Request Runtime Manager</name>
+
+  <dependencies>
+    <!-- Test dependencies -->
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.8.1</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-log4j12</artifactId>
+      <version>1.6.0</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>commons-logging</groupId>
+      <artifactId>commons-logging</artifactId>
+      <version>1.1.1</version>
+      <scope>test</scope>
+    </dependency>
+    <!-- Dependency for runtime manager -->
+    <dependency>
+      <groupId>org.jbpm</groupId>
+      <artifactId>jbpm-runtime-manager</artifactId>
+      <version>${kie.version}</version>
+    </dependency>
+    <!-- JPA dependencies -->
+    <dependency>
+      <groupId>org.hibernate.javax.persistence</groupId>
+      <artifactId>hibernate-jpa-2.0-api</artifactId>
+      <version>1.0.1.Final</version>
+    </dependency>
+    <!-- JPA implementation dependencies -->
+    <dependency>
+      <groupId>org.hibernate</groupId>
+      <artifactId>hibernate-entitymanager</artifactId>
+      <version>4.2.3.Final</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.hibernate</groupId>
+      <artifactId>hibernate-core</artifactId>
+      <version>4.2.3.Final</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.h2database</groupId>
+      <artifactId>h2</artifactId>
+      <version>1.2.128</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.codehaus.btm</groupId>
+      <artifactId>btm</artifactId>
+      <version>2.1.3</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-clean-plugin</artifactId>
+        <configuration>
+        <filesets>
+          <fileset>
+            <directory>${basedir}</directory>
+              <includes>
+                <include>btm*</include>
+                <include>*.db</include>
+              </includes>
+            </fileset>
+          </filesets>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-source-plugin</artifactId>
+        <configuration>
+          <target>1.6</target>
+          <source>1.6</source>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+
+</project>
+
