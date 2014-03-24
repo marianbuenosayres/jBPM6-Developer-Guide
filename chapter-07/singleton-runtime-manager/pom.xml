@@ -75,6 +75,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-clean-plugin</artifactId>
+        <version>2.4.1</version>
         <configuration>
         <filesets>
           <fileset>
@@ -90,6 +91,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-source-plugin</artifactId>
+        <version>2.2.1</version>
         <configuration>
           <target>1.6</target>
           <source>1.6</source>
