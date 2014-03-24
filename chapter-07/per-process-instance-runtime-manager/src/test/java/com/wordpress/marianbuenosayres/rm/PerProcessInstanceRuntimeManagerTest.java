@@ -1,6 +1,5 @@
-package com.wordpress.marianbuenosayres.rt;
+package com.wordpress.marianbuenosayres.rm;
 
-import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
@@ -23,10 +22,11 @@ import org.kie.api.runtime.manager.RuntimeManagerFactory;
 import org.kie.api.runtime.process.ProcessInstance;
 import org.kie.api.task.UserGroupCallback;
 import org.kie.internal.runtime.manager.context.EmptyContext;
+import org.kie.internal.runtime.manager.context.ProcessInstanceIdContext;
 
 import bitronix.tm.resource.jdbc.PoolingDataSource;
 
-public class SingletonRuntimeManagerTest {
+public class PerProcessInstanceRuntimeManagerTest {
 	
 	private KieBase kbase;
 	private UserGroupCallback userGroupCallback;
@@ -36,26 +36,6 @@ public class SingletonRuntimeManagerTest {
 	public void setUp() {
 		KieContainer kcontainer = KieServices.Factory.get().getKieClasspathContainer();
 		this.kbase = kcontainer.getKieBase();
-		String location = System.getProperty("jbpm.data.dir", System.getProperty("jboss.server.data.dir"));
-        if (location == null) {
-            location = System.getProperty("java.io.tmpdir");
-        }
-		File sessionIdStore = new File(location + File.separator + "singleton-A-jbpmSessionId.ser");
-		if (sessionIdStore.exists()) {
-			sessionIdStore.delete();
-		}
-		sessionIdStore = new File(location + File.separator + "singleton-B-jbpmSessionId.ser");
-		if (sessionIdStore.exists()) {
-			sessionIdStore.delete();
-		}
-		sessionIdStore = new File(location + File.separator + "singleton-C-jbpmSessionId.ser");
-		if (sessionIdStore.exists()) {
-			sessionIdStore.delete();
-		}
-		sessionIdStore = new File(location + File.separator + "singleton-D-jbpmSessionId.ser");
-		if (sessionIdStore.exists()) {
-			sessionIdStore.delete();
-		}
         Properties userGroups = new Properties();
         userGroups.setProperty("john", "developers");
         userGroups.setProperty("mary", "testers");
@@ -92,7 +72,7 @@ public class SingletonRuntimeManagerTest {
 			.get();
 
 		RuntimeManager manager = RuntimeManagerFactory.Factory.get().
-			newSingletonRuntimeManager(environment, "singleton-A");        
+			newPerProcessInstanceRuntimeManager(environment, "test-A");        
 
 		assertOneProcess(manager);
 		
@@ -112,9 +92,9 @@ public class SingletonRuntimeManagerTest {
 			.get();
 
 		RuntimeManager manager = RuntimeManagerFactory.Factory.get().
-			newSingletonRuntimeManager(environment, "singleton-B");        
+			newPerProcessInstanceRuntimeManager(environment, "test-B");        
 
-		assertManyProcesses(manager);
+		assertManyProcesses(manager, false);
 		
 		// close manager which will close session maintained by the manager
 		manager.close();
@@ -132,7 +112,7 @@ public class SingletonRuntimeManagerTest {
 			.get();
 
 		RuntimeManager manager = RuntimeManagerFactory.Factory.get().
-			newSingletonRuntimeManager(environment, "singleton-C");        
+			newPerProcessInstanceRuntimeManager(environment, "test-C");        
 
 		assertOneProcess(manager);
 		
@@ -152,9 +132,9 @@ public class SingletonRuntimeManagerTest {
 			.get();
 
 		RuntimeManager manager = RuntimeManagerFactory.Factory.get().
-			newSingletonRuntimeManager(environment, "singleton-D");        
+			newPerProcessInstanceRuntimeManager(environment, "test-D");        
 
-		assertManyProcesses(manager);
+		assertManyProcesses(manager, true);
 		
 		// close manager which will close session maintained by the manager
 		manager.close();
@@ -170,10 +150,6 @@ public class SingletonRuntimeManagerTest {
 		int sessionId = ksession.getId();
 		Assert.assertTrue(sessionId >= 0);
 		
-		runtime = manager.getRuntimeEngine(EmptyContext.get());
-		ksession = runtime.getKieSession();       
-		Assert.assertEquals(sessionId, ksession.getId());
-		
 		Map<String, Object> params = new HashMap<String, Object>();
 		
 		ProcessInstance processInstance = ksession.startProcess("sprintManagement", params);
@@ -182,45 +158,52 @@ public class SingletonRuntimeManagerTest {
 		// dispose session that should not have affect on the session and its process instances at all
 		manager.disposeRuntimeEngine(runtime);
 
-		ksession = manager.getRuntimeEngine(EmptyContext.get()).getKieSession();        
+		ksession = manager.getRuntimeEngine(new ProcessInstanceIdContext(processInstanceId)).getKieSession();
 		Assert.assertEquals(sessionId, ksession.getId());
 		ProcessInstance processInstance2 = ksession.getProcessInstance(processInstanceId);
 		
 		Assert.assertEquals(processInstance.getState(), processInstance2.getState());
 	}
 
-	private void assertManyProcesses(RuntimeManager manager) {
+	private void assertManyProcesses(RuntimeManager manager, boolean persistent) {
 		Assert.assertNotNull(manager);
-
-		RuntimeEngine runtime = manager.getRuntimeEngine(EmptyContext.get());
-		KieSession ksession = runtime.getKieSession();
-		Assert.assertNotNull(ksession);       
-
-		int sessionId = ksession.getId();
-		Assert.assertTrue(sessionId >= 0);
-		
-		runtime = manager.getRuntimeEngine(EmptyContext.get());
-		ksession = runtime.getKieSession();       
-		Assert.assertEquals(sessionId, ksession.getId());
-		
 		Map<String, Object> params = new HashMap<String, Object>();
-		ProcessInstance processInstance = ksession.startProcess("sprintManagement", params);
-		long processInstanceId = processInstance.getId();
-		ProcessInstance processInstance2 = ksession.startProcess("sprintManagement", params);
-		long processInstanceId2 = processInstance2.getId();
-		ProcessInstance processInstance3 = ksession.startProcess("sprintManagement", params);
-		long processInstanceId3 = processInstance2.getId();
-		// dispose session that should not have affect on the session and its process instances at all
-		manager.disposeRuntimeEngine(runtime);
 
-		ksession = manager.getRuntimeEngine(EmptyContext.get()).getKieSession();        
-		Assert.assertEquals(sessionId, ksession.getId());
-		ProcessInstance afterDisposeProcessInstance = ksession.getProcessInstance(processInstanceId);
-		ProcessInstance afterDisposeProcessInstance2 = ksession.getProcessInstance(processInstanceId2);
-		ProcessInstance afterDisposeProcessInstance3 = ksession.getProcessInstance(processInstanceId3);
+		//Each runtime should have its own session
+		RuntimeEngine runtime1 = manager.getRuntimeEngine(EmptyContext.get());
+		Assert.assertNotNull(runtime1);       
+		ProcessInstance processInstance1 = runtime1.getKieSession().startProcess("sprintManagement", params);
+		long processInstanceId1 = processInstance1.getId();
+		int sessionId1 = runtime1.getKieSession().getId();
 		
-		Assert.assertEquals(processInstance.getState(), afterDisposeProcessInstance.getState());
-		Assert.assertEquals(processInstance2.getState(), afterDisposeProcessInstance2.getState());
-		Assert.assertEquals(processInstance3.getState(), afterDisposeProcessInstance3.getState());
+		RuntimeEngine runtime2 = manager.getRuntimeEngine(EmptyContext.get());
+		Assert.assertNotNull(runtime2);
+		ProcessInstance processInstance2 = runtime2.getKieSession().startProcess("sprintManagement", params);
+		long processInstanceId2 = processInstance2.getId();
+		int sessionId2 = runtime2.getKieSession().getId();
+
+		RuntimeEngine runtime3 = manager.getRuntimeEngine(EmptyContext.get());
+		Assert.assertNotNull(runtime3);
+		ProcessInstance processInstance3 = runtime3.getKieSession().startProcess("sprintManagement", params);
+		long processInstanceId3 = processInstance3.getId();
+		int sessionId3 = runtime3.getKieSession().getId();
+		
+		Assert.assertFalse(runtime1.equals(runtime2));
+		Assert.assertFalse(runtime1.equals(runtime3));
+		Assert.assertFalse(runtime2.equals(runtime3));
+		
+		Assert.assertFalse(sessionId1 == sessionId2);
+		Assert.assertFalse(sessionId1 == sessionId3);
+		Assert.assertFalse(sessionId2 == sessionId3);
+		
+		if (persistent == true) {
+			//Unique IDs for process instances on different sessions is only guaranteed on persistent schemes 
+			KieSession ksession1 = manager.getRuntimeEngine(ProcessInstanceIdContext.get(processInstanceId1)).getKieSession();
+			KieSession ksession2 = manager.getRuntimeEngine(ProcessInstanceIdContext.get(processInstanceId2)).getKieSession();
+			KieSession ksession3 = manager.getRuntimeEngine(ProcessInstanceIdContext.get(processInstanceId3)).getKieSession();
+			Assert.assertEquals(sessionId1, ksession1.getId());
+			Assert.assertEquals(sessionId2, ksession2.getId());
+			Assert.assertEquals(sessionId3, ksession3.getId());
+		}
 	}
 }

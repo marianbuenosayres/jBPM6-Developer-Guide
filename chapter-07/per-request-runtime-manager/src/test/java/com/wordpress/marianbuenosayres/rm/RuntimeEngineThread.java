@@ -1,4 +1,4 @@
-package com.wordpress.marianbuenosayres.rt;
+package com.wordpress.marianbuenosayres.rm;
 
 import java.util.HashMap;
 

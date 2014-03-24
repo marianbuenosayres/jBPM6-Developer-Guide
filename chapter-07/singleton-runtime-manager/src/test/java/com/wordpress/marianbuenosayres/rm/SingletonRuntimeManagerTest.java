@@ -1,8 +1,7 @@
-package com.wordpress.marianbuenosayres.rt;
+package com.wordpress.marianbuenosayres.rm;
 
-import java.util.ArrayList;
+import java.io.File;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
@@ -27,7 +26,7 @@ import org.kie.internal.runtime.manager.context.EmptyContext;
 
 import bitronix.tm.resource.jdbc.PoolingDataSource;
 
-public class PerRequestRuntimeManagerTest {
+public class SingletonRuntimeManagerTest {
 	
 	private KieBase kbase;
 	private UserGroupCallback userGroupCallback;
@@ -37,6 +36,26 @@ public class PerRequestRuntimeManagerTest {
 	public void setUp() {
 		KieContainer kcontainer = KieServices.Factory.get().getKieClasspathContainer();
 		this.kbase = kcontainer.getKieBase();
+		String location = System.getProperty("jbpm.data.dir", System.getProperty("jboss.server.data.dir"));
+        if (location == null) {
+            location = System.getProperty("java.io.tmpdir");
+        }
+		File sessionIdStore = new File(location + File.separator + "singleton-A-jbpmSessionId.ser");
+		if (sessionIdStore.exists()) {
+			sessionIdStore.delete();
+		}
+		sessionIdStore = new File(location + File.separator + "singleton-B-jbpmSessionId.ser");
+		if (sessionIdStore.exists()) {
+			sessionIdStore.delete();
+		}
+		sessionIdStore = new File(location + File.separator + "singleton-C-jbpmSessionId.ser");
+		if (sessionIdStore.exists()) {
+			sessionIdStore.delete();
+		}
+		sessionIdStore = new File(location + File.separator + "singleton-D-jbpmSessionId.ser");
+		if (sessionIdStore.exists()) {
+			sessionIdStore.delete();
+		}
         Properties userGroups = new Properties();
         userGroups.setProperty("john", "developers");
         userGroups.setProperty("mary", "testers");
@@ -73,9 +92,9 @@ public class PerRequestRuntimeManagerTest {
 			.get();
 
 		RuntimeManager manager = RuntimeManagerFactory.Factory.get().
-			newPerRequestRuntimeManager(environment, "test-A");        
+			newSingletonRuntimeManager(environment, "singleton-A");        
 
-		assertOneProcess(manager, false);
+		assertOneProcess(manager);
 		
 		// close manager which will close session maintained by the manager
 		manager.close();
@@ -93,34 +112,14 @@ public class PerRequestRuntimeManagerTest {
 			.get();
 
 		RuntimeManager manager = RuntimeManagerFactory.Factory.get().
-			newPerRequestRuntimeManager(environment, "test-B");        
+			newSingletonRuntimeManager(environment, "singleton-B");        
 
-		assertManyProcesses(manager, false);
+		assertManyProcesses(manager);
 		
 		// close manager which will close session maintained by the manager
 		manager.close();
 	}
 	
-	@Test
-	public void testMultipleProcessesInMultipleThreads() {
-		SimpleRegisterableItemsFactory factory = new SimpleRegisterableItemsFactory();
-		factory.addWorkItemHandler("Human Task", TestAsyncWorkItemHandler.class);
-		RuntimeEnvironment environment = RuntimeEnvironmentBuilder.Factory.get()
-			.newEmptyBuilder()
-			.userGroupCallback(userGroupCallback)
-			.knowledgeBase(kbase)
-			.registerableItemsFactory(factory)
-			.get();
-
-		RuntimeManager manager = RuntimeManagerFactory.Factory.get().
-			newPerRequestRuntimeManager(environment, "test-C");        
-
-		assertManyThreads(manager, false);
-		
-		// close manager which will close session maintained by the manager
-		manager.close();
-	}
-
 	@Test
 	public void testOneProcessWithPersistence() {
 		SimpleRegisterableItemsFactory factory = new SimpleRegisterableItemsFactory();
@@ -133,9 +132,9 @@ public class PerRequestRuntimeManagerTest {
 			.get();
 
 		RuntimeManager manager = RuntimeManagerFactory.Factory.get().
-			newPerRequestRuntimeManager(environment, "test-D");        
+			newSingletonRuntimeManager(environment, "singleton-C");        
 
-		assertOneProcess(manager, true);
+		assertOneProcess(manager);
 		
 		// close manager which will close session maintained by the manager
 		manager.close();
@@ -153,35 +152,15 @@ public class PerRequestRuntimeManagerTest {
 			.get();
 
 		RuntimeManager manager = RuntimeManagerFactory.Factory.get().
-			newPerRequestRuntimeManager(environment, "test-E");
+			newSingletonRuntimeManager(environment, "singleton-D");        
 
-		assertManyProcesses(manager, true);
+		assertManyProcesses(manager);
 		
 		// close manager which will close session maintained by the manager
 		manager.close();
 	}
 
-	@Test
-	public void testMultipleProcessesWithPersistenceInMultipleThreads() {
-		SimpleRegisterableItemsFactory factory = new SimpleRegisterableItemsFactory();
-		factory.addWorkItemHandler("Human Task", TestAsyncWorkItemHandler.class);
-		RuntimeEnvironment environment = RuntimeEnvironmentBuilder.Factory.get()
-			.newDefaultBuilder()
-			.userGroupCallback(userGroupCallback)
-			.knowledgeBase(kbase)
-			.registerableItemsFactory(factory)
-			.get();
-
-		RuntimeManager manager = RuntimeManagerFactory.Factory.get().
-			newPerRequestRuntimeManager(environment, "test-F");        
-
-		assertManyThreads(manager, true);
-		
-		// close manager which will close session maintained by the manager
-		manager.close();
-	}
-
-	private void assertOneProcess(RuntimeManager manager, boolean persistent) {
+	private void assertOneProcess(RuntimeManager manager) {
 		Assert.assertNotNull(manager);
 
 		RuntimeEngine runtime = manager.getRuntimeEngine(EmptyContext.get());
@@ -191,67 +170,57 @@ public class PerRequestRuntimeManagerTest {
 		int sessionId = ksession.getId();
 		Assert.assertTrue(sessionId >= 0);
 		
+		runtime = manager.getRuntimeEngine(EmptyContext.get());
+		ksession = runtime.getKieSession();       
+		Assert.assertEquals(sessionId, ksession.getId());
+		
 		Map<String, Object> params = new HashMap<String, Object>();
 		
-		ksession.startProcess("sprintManagement", params);
+		ProcessInstance processInstance = ksession.startProcess("sprintManagement", params);
+		long processInstanceId = processInstance.getId();
 		
 		// dispose session that should not have affect on the session and its process instances at all
 		manager.disposeRuntimeEngine(runtime);
 
-		runtime = manager.getRuntimeEngine(EmptyContext.get());
-		ksession = runtime.getKieSession();
-		Assert.assertFalse(sessionId == ksession.getId());
+		ksession = manager.getRuntimeEngine(EmptyContext.get()).getKieSession();        
+		Assert.assertEquals(sessionId, ksession.getId());
+		ProcessInstance processInstance2 = ksession.getProcessInstance(processInstanceId);
 		
-		manager.disposeRuntimeEngine(runtime);
+		Assert.assertEquals(processInstance.getState(), processInstance2.getState());
 	}
 
-	private void assertManyProcesses(RuntimeManager manager, boolean persistent) {
+	private void assertManyProcesses(RuntimeManager manager) {
 		Assert.assertNotNull(manager);
+
+		RuntimeEngine runtime = manager.getRuntimeEngine(EmptyContext.get());
+		KieSession ksession = runtime.getKieSession();
+		Assert.assertNotNull(ksession);       
+
+		int sessionId = ksession.getId();
+		Assert.assertTrue(sessionId >= 0);
+		
+		runtime = manager.getRuntimeEngine(EmptyContext.get());
+		ksession = runtime.getKieSession();       
+		Assert.assertEquals(sessionId, ksession.getId());
+		
 		Map<String, Object> params = new HashMap<String, Object>();
-
-		//Each runtime should have its own session
-		RuntimeEngine runtime1 = manager.getRuntimeEngine(EmptyContext.get());
-		Assert.assertNotNull(runtime1);       
-		ProcessInstance processInstance1 = runtime1.getKieSession().startProcess("sprintManagement", params);
-		long processInstanceId1 = processInstance1.getId();
-		
-		RuntimeEngine runtime2 = manager.getRuntimeEngine(EmptyContext.get());
-		Assert.assertNotNull(runtime2);
-		ProcessInstance processInstance2 = runtime2.getKieSession().startProcess("sprintManagement", params);
+		ProcessInstance processInstance = ksession.startProcess("sprintManagement", params);
+		long processInstanceId = processInstance.getId();
+		ProcessInstance processInstance2 = ksession.startProcess("sprintManagement", params);
 		long processInstanceId2 = processInstance2.getId();
+		ProcessInstance processInstance3 = ksession.startProcess("sprintManagement", params);
+		long processInstanceId3 = processInstance2.getId();
+		// dispose session that should not have affect on the session and its process instances at all
+		manager.disposeRuntimeEngine(runtime);
 
-		Assert.assertTrue(runtime1.equals(runtime2));
+		ksession = manager.getRuntimeEngine(EmptyContext.get()).getKieSession();        
+		Assert.assertEquals(sessionId, ksession.getId());
+		ProcessInstance afterDisposeProcessInstance = ksession.getProcessInstance(processInstanceId);
+		ProcessInstance afterDisposeProcessInstance2 = ksession.getProcessInstance(processInstanceId2);
+		ProcessInstance afterDisposeProcessInstance3 = ksession.getProcessInstance(processInstanceId3);
 		
-		//Disposing a runtime is the only way to get two runtimes in the same thread
-		manager.disposeRuntimeEngine(runtime1);
-		
-		RuntimeEngine runtime3 = manager.getRuntimeEngine(EmptyContext.get());
-		
-		//Unique IDs for process instances on different sessions is only guaranteed on persistent schemes 
-		Assert.assertNotSame(runtime3, runtime1);
-		if (persistent) {
-			Assert.assertFalse(processInstanceId1 == processInstanceId2);
-		}
-		
-		manager.disposeRuntimeEngine(runtime2);
-		manager.disposeRuntimeEngine(runtime3);
-	}
-
-	private void assertManyThreads(RuntimeManager manager, boolean persistent) {
-		List<RuntimeEngineThread> threads = new ArrayList<RuntimeEngineThread>();
-		for (int index = 0; index < 3; index++) {
-			RuntimeEngineThread thread = new RuntimeEngineThread(manager);
-			threads.add(thread);
-			thread.start();
-		}
-		for (RuntimeEngineThread thread : threads) {
-			thread.dispose();
-		}
-		Assert.assertFalse(threads.get(0).getSessionId() == threads.get(1).getSessionId());
-		Assert.assertFalse(threads.get(0).getSessionId() == threads.get(2).getSessionId());
-		if (persistent) {
-			Assert.assertFalse(threads.get(0).getProcessInstanceId() == threads.get(1).getProcessInstanceId());
-			Assert.assertFalse(threads.get(0).getProcessInstanceId() == threads.get(2).getProcessInstanceId());
-		}
+		Assert.assertEquals(processInstance.getState(), afterDisposeProcessInstance.getState());
+		Assert.assertEquals(processInstance2.getState(), afterDisposeProcessInstance2.getState());
+		Assert.assertEquals(processInstance3.getState(), afterDisposeProcessInstance3.getState());
 	}
 }

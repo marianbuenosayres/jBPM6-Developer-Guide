@@ -1,4 +1,4 @@
-package com.wordpress.marianbuenosayres.rt;
+package com.wordpress.marianbuenosayres.rm;
 
 import org.kie.api.runtime.process.WorkItem;
 import org.kie.api.runtime.process.WorkItemHandler;
