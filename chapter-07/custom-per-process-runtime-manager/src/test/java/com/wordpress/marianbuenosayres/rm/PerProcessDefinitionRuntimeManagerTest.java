@@ -22,8 +22,6 @@ import org.kie.api.runtime.manager.RuntimeManager;
 import org.kie.api.runtime.process.ProcessInstance;
 import org.kie.api.task.UserGroupCallback;
 
-import bitronix.tm.resource.jdbc.PoolingDataSource;
-
 import com.wordpress.marianbuenosayres.custom.CustomRMFactory;
 import com.wordpress.marianbuenosayres.custom.ProcessDefContext;
 
@@ -31,7 +29,6 @@ public class PerProcessDefinitionRuntimeManagerTest {
 	
 	private KieBase kbase;
 	private UserGroupCallback userGroupCallback;
-    private PoolingDataSource ds;
 	
 	@Before
 	public void setUp() {
@@ -42,25 +39,8 @@ public class PerProcessDefinitionRuntimeManagerTest {
         userGroups.setProperty("mary", "testers");
         userGroups.setProperty("Administrator", "Administrators,developers,testers");
         this.userGroupCallback = new JBossUserGroupCallbackImpl(userGroups);
-
-        this.ds = new PoolingDataSource();
-        this.ds.setUniqueName("jdbc/testDS");
-        this.ds.setClassName("org.h2.jdbcx.JdbcDataSource");
-        this.ds.setMaxPoolSize(3);
-        this.ds.setAllowLocalTransactions(true);
-        this.ds.getDriverProperties().setProperty("URL", "jdbc:h2:tasks;MVCC=true;DB_CLOSE_ON_EXIT=FALSE");
-        this.ds.getDriverProperties().setProperty("user", "sa");
-        this.ds.getDriverProperties().setProperty("password", "sasa");
-        this.ds.init();
     }
 
-    @After
-    public void tearDown() throws Exception {
-        if (this.ds != null) {
-            this.ds.close();
-        }
-    }
-	
 	@Test
 	public void testOneProcess() throws Exception {
 		SimpleRegisterableItemsFactory factory = new SimpleRegisterableItemsFactory();
@@ -95,7 +75,7 @@ public class PerProcessDefinitionRuntimeManagerTest {
 		RuntimeManager manager = CustomRMFactory.getInstance().
 			newPerProcessDefinitionRuntimeManager(environment, "test-B");        
 
-		assertTwoProcessesSameDefinition(manager, false);
+		assertTwoProcessesSameDefinition(manager);
 		
 		// close manager which will close session maintained by the manager
 		manager.close();
@@ -115,72 +95,12 @@ public class PerProcessDefinitionRuntimeManagerTest {
 		RuntimeManager manager = CustomRMFactory.getInstance().
 			newPerProcessDefinitionRuntimeManager(environment, "test-C");        
 
-		assertTwoProcessesDifferentDefinitions(manager, false);
+		assertTwoProcessesDifferentDefinitions(manager);
 		
 		// close manager which will close session maintained by the manager
 		manager.close();
 	}
 	
-	@Test @Ignore("To be corrected")
-	public void testOneProcessWithPersistence() throws Exception {
-		SimpleRegisterableItemsFactory factory = new SimpleRegisterableItemsFactory();
-		factory.addWorkItemHandler("Human Task", TestAsyncWorkItemHandler.class);
-		RuntimeEnvironment environment = RuntimeEnvironmentBuilder.Factory.get()
-			.newDefaultBuilder()
-			.userGroupCallback(userGroupCallback)
-			.knowledgeBase(kbase)
-			.registerableItemsFactory(factory)
-			.get();
-
-		RuntimeManager manager = CustomRMFactory.getInstance().
-			newPerProcessDefinitionRuntimeManager(environment, "test-D");
-
-		assertOneProcess(manager);
-		
-		// close manager which will close session maintained by the manager
-		manager.close();
-	}
-	
-	@Test @Ignore("To be corrected")
-	public void testTwoProcessesSameDefinitionWithPersistence() {
-		SimpleRegisterableItemsFactory factory = new SimpleRegisterableItemsFactory();
-		factory.addWorkItemHandler("Human Task", TestAsyncWorkItemHandler.class);
-		RuntimeEnvironment environment = RuntimeEnvironmentBuilder.Factory.get()
-			.newDefaultBuilder()
-			.userGroupCallback(userGroupCallback)
-			.knowledgeBase(kbase)
-			.registerableItemsFactory(factory)
-			.get();
-
-		RuntimeManager manager = CustomRMFactory.getInstance().
-			newPerProcessDefinitionRuntimeManager(environment, "test-E");        
-
-		assertTwoProcessesSameDefinition(manager, true);
-		
-		// close manager which will close session maintained by the manager
-		manager.close();
-	}
-
-	@Test @Ignore("To be corrected")
-	public void testTwoProcessesDifferentDefinitionsWithPersistence() {
-		SimpleRegisterableItemsFactory factory = new SimpleRegisterableItemsFactory();
-		factory.addWorkItemHandler("Human Task", TestAsyncWorkItemHandler.class);
-		RuntimeEnvironment environment = RuntimeEnvironmentBuilder.Factory.get()
-			.newDefaultBuilder()
-			.userGroupCallback(userGroupCallback)
-			.knowledgeBase(kbase)
-			.registerableItemsFactory(factory)
-			.get();
-
-		RuntimeManager manager = CustomRMFactory.getInstance().
-			newPerProcessDefinitionRuntimeManager(environment, "test-F");        
-
-		assertTwoProcessesDifferentDefinitions(manager, true);
-		
-		// close manager which will close session maintained by the manager
-		manager.close();
-	}
-
 	private void assertOneProcess(RuntimeManager manager) throws Exception {
 		Assert.assertNotNull(manager);
 		
@@ -206,7 +126,7 @@ public class PerProcessDefinitionRuntimeManagerTest {
 		Assert.assertEquals(processInstance.getState(), processInstance2.getState());
 	}
 	
-	private void assertTwoProcessesSameDefinition(RuntimeManager manager, boolean persistent) {
+	private void assertTwoProcessesSameDefinition(RuntimeManager manager) {
 		Assert.assertNotNull(manager);
 		Map<String, Object> params = new HashMap<String, Object>();
 		
@@ -224,12 +144,9 @@ public class PerProcessDefinitionRuntimeManagerTest {
 		int sessionId2 = runtime2.getKieSession().getId();
 
 		Assert.assertEquals(sessionId1, sessionId2);
-		if (persistent == true) {
-			Assert.assertTrue(processInstanceId1 != processInstanceId2);
-		}
 	}
 
-	private void assertTwoProcessesDifferentDefinitions(RuntimeManager manager, boolean persistent) {
+	private void assertTwoProcessesDifferentDefinitions(RuntimeManager manager) {
 		Assert.assertNotNull(manager);
 		Map<String, Object> params = new HashMap<String, Object>();
 		
@@ -247,8 +164,5 @@ public class PerProcessDefinitionRuntimeManagerTest {
 		int sessionId2 = runtime2.getKieSession().getId();
 
 		Assert.assertFalse(sessionId1 == sessionId2);
-		if (persistent == true) {
-			Assert.assertFalse(processInstanceId1 == processInstanceId2);
-		}
 	}
 }
