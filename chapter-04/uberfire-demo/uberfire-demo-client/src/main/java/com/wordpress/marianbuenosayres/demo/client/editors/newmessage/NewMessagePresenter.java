@@ -13,7 +13,7 @@ import org.uberfire.client.annotations.WorkbenchPopup;
 import org.uberfire.client.mvp.UberView;
 import org.uberfire.lifecycle.OnStartup;
 import org.uberfire.mvp.PlaceRequest;
-import org.uberfire.workbench.events.BeforeClosePlaceEvent;
+import org.uberfire.client.workbench.events.BeforeClosePlaceEvent;
 
 import com.wordpress.marianbuenosayres.api.model.events.NewMessageEvent;
 import com.wordpress.marianbuenosayres.api.service.DemoServiceEntryPoint;

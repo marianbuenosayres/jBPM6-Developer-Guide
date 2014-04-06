@@ -4,7 +4,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.jbpm.services.task.lifecycle.listeners.TaskLifeCycleEventListener;
-import org.kie.internal.task.api.TaskEvent;
+import org.kie.api.task.TaskEvent;
 
 public class LogTaskChangeListener implements TaskLifeCycleEventListener {
 

@@ -59,7 +59,7 @@ public class PerProcessDefinitionRuntimeManager extends AbstractRuntimeManager {
         	if (localRuntime != null) {
         		return localRuntime;
         	}
-        	ksessionId = mapper.findMapping(context);
+        	ksessionId = mapper.findMapping(context, getIdentifier());
         	if (ksessionId == null) {
         		ksession = factory.newKieSession();
         		ksessionId = ksession.getId();
@@ -89,7 +89,7 @@ public class PerProcessDefinitionRuntimeManager extends AbstractRuntimeManager {
         if (context == null || context.getContextId() == null) {
             return;
         }
-        Integer ksessionId = mapper.findMapping(context);
+        Integer ksessionId = mapper.findMapping(context, getIdentifier());
                 
         if (ksessionId == null) {
             return;
@@ -135,8 +135,8 @@ public class PerProcessDefinitionRuntimeManager extends AbstractRuntimeManager {
         @Override
         public void beforeProcessStarted(ProcessStartedEvent event) {
         	String processId = event.getProcessInstance().getProcessId();
-        	if (mapper.findContextId(ksessionId) == null) {
-        		mapper.saveMapping(ProcessDefContext.get(processId), ksessionId);
+        	if (mapper.findContextId(ksessionId, getIdentifier()) == null) {
+        		mapper.saveMapping(ProcessDefContext.get(processId), ksessionId, getIdentifier());
         	}
         }
     }

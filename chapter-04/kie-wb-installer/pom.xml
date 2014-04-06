@@ -22,14 +22,14 @@
     <dependency>
       <groupId>org.kie</groupId>
       <artifactId>kie-wb-distribution-wars</artifactId>
-      <version>6.0.1.Final</version>
+      <version>${kie.version}</version>
       <classifier>jboss-as7</classifier>
       <type>war</type>
     </dependency>
     <dependency>
       <groupId>org.jbpm.dashboard</groupId>
       <artifactId>jbpm-dashboard-distributions</artifactId>
-      <version>6.0.1.Final</version>
+      <version>${kie.version}</version>
       <classifier>jboss-as7</classifier>
       <type>war</type>
     </dependency>

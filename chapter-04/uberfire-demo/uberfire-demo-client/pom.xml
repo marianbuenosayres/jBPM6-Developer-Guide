@@ -34,7 +34,13 @@
 
     <dependency>
       <groupId>org.uberfire</groupId>
-      <artifactId>uberfire-workbench</artifactId>
+      <artifactId>uberfire-workbench-processors</artifactId>
+      <version>${uberfire.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.uberfire</groupId>
+      <artifactId>uberfire-workbench-client</artifactId>
       <version>${uberfire.version}</version>
     </dependency>
 

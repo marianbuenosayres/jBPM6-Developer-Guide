@@ -12,8 +12,8 @@
   <name>Chapter 04 :: Uberfire Demo</name>
 
   <properties>
-    <uberfire.version>0.3.1.Final</uberfire.version>
-    <errai.version>2.4.3.Final</errai.version>
+    <uberfire.version>0.4.0.Beta3</uberfire.version>
+    <errai.version>2.4.4.Final</errai.version>
   </properties>
 
   <modules>
