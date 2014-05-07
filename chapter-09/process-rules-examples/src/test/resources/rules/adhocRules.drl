@@ -1,0 +1,54 @@
+package com.wordpress.marianbuenosayres;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import org.kie.api.runtime.process.WorkflowProcessInstance;
+import org.kie.api.runtime.KieRuntime;
+import org.jbpm.workflow.instance.node.DynamicNodeInstance;
+import org.jbpm.workflow.instance.node.DynamicUtils;
+import org.jbpm.workflow.core.impl.NodeImpl;
+
+rule "init rule"
+salience 100
+ruleflow-group "ad-hoc-sub"
+when
+    wf: WorkflowProcessInstance($nodes: nodeInstances)
+    dn: DynamicNodeInstance() from $nodes
+    eval(wf.getVariable("processVar1") == null)
+then
+    System.out.println(drools.getRule().getName());
+    KieRuntime kr = kcontext.getKnowledgeRuntime();
+    Map params = new HashMap();
+    params.put("inVar1", wf.getVariable("processVar1"));
+    params.put("TaskName", "decide what's next");
+    DynamicUtils.addDynamicWorkItem(dn, kr, "Human Task", params);
+end
+
+rule "execute something"
+ruleflow-group "ad-hoc-sub"
+when
+    String(this == "SOME ACTUAL VALUE") //this comes from a process variable
+    wf: WorkflowProcessInstance($nodes: nodeInstances)
+    dn: DynamicNodeInstance() from $nodes
+then
+    System.out.println(drools.getRule().getName());
+    KieRuntime kr = kcontext.getKnowledgeRuntime();
+    Map params = new HashMap();
+    params.put("inVar1", wf.getVariable("processVar1"));
+    params.put("TaskName", "execute action");
+    DynamicUtils.addDynamicWorkItem(dn, kr, "Human Task", params);
+end
+
+rule "completion justification"
+ruleflow-group "ad-hoc-sub"
+when
+    Integer(intValue > 10) //this comes from a process variable
+    wf: WorkflowProcessInstance($nodes: nodeInstances)
+    dn: DynamicNodeInstance() from $nodes
+then
+    System.out.println(drools.getRule().getName());
+    wf.setVariable("completed", Boolean.TRUE);
+    dn.triggerCompleted(NodeImpl.CONNECTION_DEFAULT_TYPE);
+end
+
