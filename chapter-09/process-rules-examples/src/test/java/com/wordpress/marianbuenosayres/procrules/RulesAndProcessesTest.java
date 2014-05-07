@@ -48,7 +48,8 @@ public class RulesAndProcessesTest {
 		ksession.addEventListener(new DefaultAgendaEventListener() {
 			@Override
 			public void afterRuleFlowGroupActivated(RuleFlowGroupActivatedEvent event) {
-				ksession.fireAllRules();
+				KieSession kses = (KieSession) event.getKieRuntime();
+				kses.fireAllRules();
 			}
 		});
 		Map<String, Object> params = new HashMap<String, Object>();
@@ -85,7 +86,8 @@ public class RulesAndProcessesTest {
 		ksession.addEventListener(new DefaultAgendaEventListener() {
 			@Override
 			public void afterRuleFlowGroupActivated(RuleFlowGroupActivatedEvent event) {
-				ksession.fireAllRules();
+				KieSession kses = (KieSession) event.getKieRuntime();
+				kses.fireAllRules();
 			}
 		});
 		
