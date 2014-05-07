@@ -1,0 +1,39 @@
+package com.wordrpess.marianbuenosayres;
+
+import com.wordpress.marianbuenosayres.model.Requirement;
+import com.wordpress.marianbuenosayres.service.NotifierService;
+
+import org.kie.api.runtime.process.WorkflowProcessInstance;
+
+global NotifierService notifier;
+
+declare ProcessEvent
+    @role(event)
+    processId: String
+    state: Integer
+    reqVariable: Object
+end
+
+rule "create events for each process instance"
+when
+    pi: WorkflowProcessInstance()
+then
+    ProcessEvent event = new ProcessEvent(pi.getProcessId(), pi.getState(), pi.getVariable("req"));
+    insert(event);
+end 
+
+rule "more than reqPriorityProcesses 10 processes in 5 minutes"
+when
+    Number(intValue > 10) from accumulate(
+        pi: ProcessEvent(
+            processId == "reqPriorityProcess", 
+            state == WorkflowProcessInstance.STATE_ACTIVE,
+            reqVariable != null) 
+        over window:time(5m), 
+        count(pi)
+    )
+then
+    notifier.sendWarning(drools.getRule().getName());
+end
+
+

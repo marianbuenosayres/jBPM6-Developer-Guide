@@ -5,9 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.jbpm.process.instance.event.listeners.RuleAwareProcessEventLister;
-import org.junit.After;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 import org.kie.api.KieServices;
 import org.kie.api.event.rule.DefaultAgendaEventListener;
@@ -21,24 +19,10 @@ import com.wordpress.marianbuenosayres.model.Requirement;
 
 public class RulesAndProcessesTest {
 
-	private KieSession ksession;
-	
-	@Before
-	public void setUp() {
-		KieServices ks = KieServices.Factory.get();
-		this.ksession = ks.getKieClasspathContainer().newKieSession();
-	}
-	
-	@After
-	public void tearDown() {
-		if (this.ksession != null) {
-			this.ksession.dispose();
-		}
-		this.ksession = null;
-	}
-	
 	@Test
 	public void testInvokeRulesFromProcess() {
+		KieServices ks = KieServices.Factory.get();
+		KieSession ksession = ks.getKieClasspathContainer().newKieSession();
 		TestAsyncWorkItemHandler handler = new TestAsyncWorkItemHandler();
 		//register the work item handlers needed for the process executions
 		ksession.getWorkItemManager().registerWorkItemHandler("asyncTask", handler);
@@ -73,10 +57,13 @@ public class RulesAndProcessesTest {
 		//We complete the process
 		ksession.getWorkItemManager().completeWorkItem(item.getId(), null);
 		Assert.assertEquals(ProcessInstance.STATE_COMPLETED, instance.getState());
+		ksession.dispose();
 	}
 	
 	@Test
 	public void testInvokeProcessFromRules() {
+		KieServices ks = KieServices.Factory.get();
+		KieSession ksession = ks.getKieClasspathContainer().newKieSession();
 		TestAsyncWorkItemHandler handler = new TestAsyncWorkItemHandler();
 		//register the work item handlers needed for the process executions
 		ksession.getWorkItemManager().registerWorkItemHandler("asyncTask", handler);
@@ -113,5 +100,6 @@ public class RulesAndProcessesTest {
 		//We complete the process
 		ksession.getWorkItemManager().completeWorkItem(item.getId(), null);
 		Assert.assertEquals(ProcessInstance.STATE_COMPLETED, instance.getState());
+		ksession.dispose();
 	}
 }
