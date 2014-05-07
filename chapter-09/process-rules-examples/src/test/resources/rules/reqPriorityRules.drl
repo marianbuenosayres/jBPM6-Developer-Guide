@@ -1,0 +1,50 @@
+package com.wordrpess.marianbuenosayres;
+
+import com.wordpress.marianbuenosayres.model.Requirement;
+import com.wordpress.marianbuenosayres.model.ProcessCreationTrigger;
+
+import org.kie.api.runtime.process.WorkflowProcessInstance;
+
+import java.util.Map;
+import java.util.HashMap;
+
+rule "start a process for every requirement"
+when
+    r: Requirement()
+    t: ProcessCreationTrigger()
+    not (WorkflowProcessInstance(getVariable("req") == r))
+then
+    Map params = new HashMap();
+    params.put("req", r);
+    kcontext.getKieRuntime().startProcess("reqPriorityProcess", params);	
+end
+
+rule "prioritize requirements with lots of bugs"
+ruleflow-group "establish-reqs-priority"
+lock-on-active
+when
+    r: Requirement(bugs.size() > 3)
+then
+    r.setPriority(20 / r.getBugs().size());
+    update(r);
+end
+
+rule "prioritize requirements with URGENT on the name"
+ruleflow-group "establish-reqs-priority"
+lock-on-active
+when
+    r: Requirement(name matches ".*(urgent|URGENT).*")
+then
+    r.setPriority(1);
+    update(r);
+end
+
+rule "default priority for other cases"
+ruleflow-group "establish-reqs-priority"
+salience -1
+when
+    r: Requirement(priority == -1)
+then
+    r.setPriority(5);
+end
+
