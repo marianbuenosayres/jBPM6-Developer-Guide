@@ -22,7 +22,16 @@ then
     insert(event);
 end 
 
-rule "more than reqPriorityProcesses 10 processes in 5 minutes"
+rule "two processes at least 3 minutes appart"
+when
+    o: Object() from entry-point "tempop-test"
+    p1: ProcessEvent($processId1 : processId)
+    p2: ProcessEvent(this after[3m] p1, processId == $processId1)
+then
+    System.out.println(drools.getRule().getName());
+end
+
+rule "reqPriorityProcess: more than 10 processes in 5 minutes"
 when
     Number(intValue > 10) from accumulate(
         pi: ProcessEvent(
