@@ -1,4 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <kmodule xmlns="http://jboss.org/kie/6.0.0/kmodule">
 
+  <kbase name="default" default="true"/>
+
+  <kbase name="rules" eventProcessingMode="stream">
+    <ksession name="cep" clockType="pseudo"/>
+  </kbase>
+ 
 </kmodule>
