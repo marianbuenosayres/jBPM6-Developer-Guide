@@ -26,7 +26,7 @@ import com.wordpress.marianbuenosayres.demo.client.i18n.Constants;
 import com.wordpress.marianbuenosayres.api.service.DemoServiceEntryPoint;
 
 @Dependent
-@WorkbenchScreen(identifier = "uberFireDemo.MessageListScreen")
+@WorkbenchScreen(identifier = "uberFireDemoMessageListScreen")
 public class MessageListPresenter {
 
     public interface MessageListView extends UberView<MessageListPresenter> {
@@ -97,7 +97,7 @@ public class MessageListPresenter {
                 .respondsWith(new Command() {
                     @Override
                     public void execute() {
-                        placeManager.goTo( new DefaultPlaceRequest( "uberFireDemo.NewMessagePopup" ) );
+                        placeManager.goTo( new DefaultPlaceRequest( "uberFireDemoNewMessagePopup" ) );
                         
                     }
                 })

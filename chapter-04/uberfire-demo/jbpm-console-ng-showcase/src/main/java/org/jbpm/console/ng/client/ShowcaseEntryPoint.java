@@ -150,7 +150,7 @@ public class ShowcaseEntryPoint {
         result.add( MenuFactory.newSimpleItem( "My Customized panel of Messages" ).respondsWith( new Command() {
             @Override
             public void execute() {
-                placeManager.goTo( new DefaultPlaceRequest( "uberFireDemo.MessageListPerspective" ) );
+                placeManager.goTo( new DefaultPlaceRequest( "uberFireDemoMessageListPerspective" ) );
             }
         } ).endMenu().build().getItems().get( 0 ) );
 

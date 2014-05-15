@@ -19,7 +19,7 @@ import com.wordpress.marianbuenosayres.api.service.DemoServiceEntryPoint;
 import com.wordpress.marianbuenosayres.api.model.events.NewMessageEvent;
 
 @Dependent
-@WorkbenchPopup(identifier = "uberFireDemo.NewMessagePopup")
+@WorkbenchPopup(identifier = "uberFireDemoNewMessagePopup")
 public class NewMessagePresenter {
 
     public interface NewMessageView extends UberView<NewMessagePresenter> {
