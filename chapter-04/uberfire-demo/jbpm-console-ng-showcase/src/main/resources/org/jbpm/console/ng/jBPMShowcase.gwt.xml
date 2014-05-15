@@ -2,22 +2,16 @@
 <!DOCTYPE module PUBLIC "-//Google Inc.//DTD Google Web Toolkit 2.4.0//EN"
     "http://google-web-toolkit.googlecode.com/svn/tags/2.5.0/distro-source/core/src/gwt-module.dtd">
 <module>
-  <inherits name="org.jboss.errai.enterprise.CDI" />
-  <inherits name="org.jboss.errai.ui.UI" />
   <inherits name="com.google.gwt.xml.XML" />
-  <!--inherits name='com.googlecode.gchart.GChart'/-->
+  <inherits name="org.jboss.errai.ui.UI" />
 
   <!-- Uberfire dependencies -->
-  <inherits name="org.uberfire.UberfireJS"/>
-  <inherits name="org.uberfire.UberfireWorkbench"/>
-  <inherits name="org.uberfire.UberfireWidgetsCore"/>
-  <inherits name="org.uberfire.UberfireWidgetsCommons"/>
-  <inherits name="org.uberfire.UberfireBackend"/>
-  <inherits name="org.uberfire.security.UberfireSecurityClient"/>
+  <inherits name="org.uberfire.UberfireClientAll"/>
+  <inherits name="org.uberfire.UberfireNSWEManager"/>
 
   <!-- Drools dependencies -->
   <inherits name="org.drools.workbench.models.datamodel.DroolsWorkbenchDataModelAPI"/>
-  <inherits name="org.drools.workbench.models.guided.dtable.DroolsWorkbenchModelsGuidedDTable"/>
+  <inherits name="org.drools.workbench.screens.workitems.DroolsWorkbenchWorkItemsEditorClient"/>
 
   <!-- Guvnor dependencies -->
   <inherits name="org.guvnor.m2repo.GuvnorM2RepoEditorClient"/>
@@ -45,10 +39,13 @@
   <inherits name="org.jbpm.console.ng.pr.JbpmConsoleNGProcessRuntimeClient"/>
   <inherits name="org.jbpm.console.ng.bd.JbpmConsoleNGBusinessDomainClient"/>
   <inherits name="org.jbpm.console.ng.es.JbpmConsoleNGExecutorServiceClient"/>
-  
+  <inherits name="org.jbpm.console.ng.ht.forms.JbpmConsoleNGHumanTasksFormsClient"/>
+  <inherits name="org.jbpm.console.ng.ht.admin.JbpmConsoleNGHumanTasksAdminClient"/>
+ 
   <!-- designer -->
   <inherits name="org.jbpm.designer.jBPMDesignerAPI"/>
   <inherits name="org.jbpm.designer.jBPMDesignerClient"/>
+  <inherits name="org.jbpm.console.ng.gc.JbpmConsoleNGGenericClient"/>
 
   <!-- Form-Modelere -->
   <inherits name="org.jbpm.formModeler.editor.FormModelerEditorClient"/>
@@ -71,9 +68,9 @@
   <source path='client' />
  
   <extend-property name="locale" values="de"/>
-  <extend-property name="locale" values="es_AR"/>
-  <extend-property name="locale" values="fr_FR"/> 
-  <extend-property name="locale" values="ja_JP"/>
+  <extend-property name="locale" values="es"/>
+  <extend-property name="locale" values="fr"/> 
+  <extend-property name="locale" values="ja"/>
   <extend-property name="locale" values="pt_BR"/>
   <extend-property name="locale" values="zh_CN"/>
   

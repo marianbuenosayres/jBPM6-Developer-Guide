@@ -3,23 +3,15 @@ package com.wordpress.marianbuenosayres.bpmn2;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.drools.core.WorkingMemory;
-import org.drools.core.event.ActivationCancelledEvent;
-import org.drools.core.event.ActivationCreatedEvent;
-import org.drools.core.event.AfterActivationFiredEvent;
-import org.drools.core.event.AgendaEventListener;
-import org.drools.core.event.AgendaGroupPoppedEvent;
-import org.drools.core.event.AgendaGroupPushedEvent;
-import org.drools.core.event.BeforeActivationFiredEvent;
-import org.drools.core.event.RuleFlowGroupActivatedEvent;
-import org.drools.core.event.RuleFlowGroupDeactivatedEvent;
-import org.drools.core.impl.StatefulKnowledgeSessionImpl;
 import org.junit.Assert;
 import org.junit.Test;
 import org.kie.api.KieServices;
 import org.kie.api.builder.KieBuilder;
 import org.kie.api.builder.KieFileSystem;
 import org.kie.api.builder.Message;
+import org.kie.api.event.rule.DefaultAgendaEventListener;
+import org.kie.api.event.rule.MatchCreatedEvent;
+import org.kie.api.event.rule.RuleFlowGroupActivatedEvent;
 import org.kie.api.runtime.KieContainer;
 import org.kie.api.runtime.KieSession;
 import org.kie.api.runtime.process.ProcessInstance;
@@ -309,31 +301,16 @@ KieSession ksession = createKieSession();
 		}
 		KieContainer kcontainer = ks.newKieContainer(kbuilder.getKieModule().getReleaseId());
 		final KieSession ksession = kcontainer.newKieSession();
-		((StatefulKnowledgeSessionImpl) ksession).session.addEventListener(new AgendaEventListener() {
+		ksession.addEventListener(new DefaultAgendaEventListener() {
 			@Override
-			public void beforeRuleFlowGroupDeactivated(RuleFlowGroupDeactivatedEvent event, WorkingMemory workingMemory) { }
-			@Override
-			public void beforeRuleFlowGroupActivated(RuleFlowGroupActivatedEvent event, WorkingMemory workingMemory) { }
-			@Override
-			public void beforeActivationFired(BeforeActivationFiredEvent event, WorkingMemory workingMemory) { }
-			@Override
-			public void agendaGroupPushed(AgendaGroupPushedEvent event, WorkingMemory workingMemory) { }
-			@Override
-			public void agendaGroupPopped(AgendaGroupPoppedEvent event, WorkingMemory workingMemory) { }
-			@Override
-			public void afterRuleFlowGroupDeactivated( RuleFlowGroupDeactivatedEvent event, WorkingMemory workingMemory) { }
-			@Override
-			public void afterRuleFlowGroupActivated(RuleFlowGroupActivatedEvent event, WorkingMemory workingMemory) { 
-				workingMemory.fireAllRules();
+			public void afterRuleFlowGroupActivated(RuleFlowGroupActivatedEvent event) {
+				KieSession kses = (KieSession) event.getKieRuntime();
+				kses.fireAllRules();
 			}
-			@Override
-			public void afterActivationFired(AfterActivationFiredEvent event, WorkingMemory workingMemory) { }
-			@Override
-			public void activationCreated(ActivationCreatedEvent event, WorkingMemory workingMemory) {
-				ksession.fireAllRules();
+			public void matchCreated(MatchCreatedEvent event) {
+				KieSession kses = (KieSession) event.getKieRuntime();
+				kses.fireAllRules();
 			}
-			@Override
-			public void activationCancelled(ActivationCancelledEvent event, WorkingMemory workingMemory) { }
 		});
 		return ksession;
 	}

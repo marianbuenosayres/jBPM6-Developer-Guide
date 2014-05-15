@@ -1,8 +1,6 @@
 package com.wordpress.marianbuenosayres.quickstart;
 
-import org.drools.core.RuleBase;
-import org.drools.core.impl.InternalKnowledgeBase;
-import org.drools.core.reteoo.ReteooRuleBase;
+import org.drools.core.impl.KnowledgeBaseImpl;
 import org.jbpm.process.instance.impl.Action;
 import org.jbpm.ruleflow.core.RuleFlowProcess;
 import org.jbpm.workflow.core.DroolsAction;
@@ -55,10 +53,8 @@ public class ProgrammedProcessExecutionTest {
 	private KieSession createSessionForProcess(RuleFlowProcess process) {
 		
 		KieBase kbase = KieServices.Factory.get().getKieClasspathContainer().getKieBase(); 
-		InternalKnowledgeBase intKbase = (InternalKnowledgeBase) kbase;
-		RuleBase rbase = intKbase.getRuleBase();
-		ReteooRuleBase reteooRbase = (ReteooRuleBase) rbase;
-		reteooRbase.addProcess(process);
+		KnowledgeBaseImpl intKbase = (KnowledgeBaseImpl) kbase;
+		intKbase.addProcess(process);
 		return kbase.newKieSession();
 	}
 

@@ -15,8 +15,8 @@ import org.uberfire.lifecycle.OnStartup;
 import org.uberfire.mvp.PlaceRequest;
 import org.uberfire.client.workbench.events.BeforeClosePlaceEvent;
 
-import com.wordpress.marianbuenosayres.api.model.events.NewMessageEvent;
 import com.wordpress.marianbuenosayres.api.service.DemoServiceEntryPoint;
+import com.wordpress.marianbuenosayres.api.model.events.NewMessageEvent;
 
 @Dependent
 @WorkbenchPopup(identifier = "uberFireDemo.NewMessagePopup")

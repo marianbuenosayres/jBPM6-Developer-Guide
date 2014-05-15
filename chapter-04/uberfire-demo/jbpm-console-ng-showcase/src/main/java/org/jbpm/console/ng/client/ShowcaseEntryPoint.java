@@ -98,8 +98,9 @@ public class ShowcaseEntryPoint {
                 .newTopLevelMenu( constants.Process_Management() ).withItems( getProcessMGMTViews() ).endMenu()
                 //ADDS MY ADDED ITEMS
                 .newTopLevelMenu( "MY ADDED ITEMS").withItems ( getMyAddedItems() ).endMenu()
-                .newTopLevelMenu( constants.Work() ).withItems( getWorkViews() ).endMenu().newTopLevelMenu( constants.Dashboards() )
-                    .withItems( getDashboardsViews() ).endMenu()
+                .newTopLevelMenu( constants.Work() ).withItems( getWorkViews() ).endMenu()
+                .newTopLevelMenu( constants.Dashboards() ).withItems( getDashboardsViews() ).endMenu()
+                .newTopLevelMenu( constants.Experimental() ).withItems( getExperimentalViews() ).endMenu()
                 .newTopLevelMenu( constants.User()+": "+identity.getName() ).position(MenuPosition.RIGHT).withItems( getRoles() ).endMenu()
                 .build();
 
@@ -156,6 +157,19 @@ public class ShowcaseEntryPoint {
         return result;
     }
 
+    private List<? extends MenuItem> getExperimentalViews() {
+        final List<MenuItem> result = new ArrayList<MenuItem>( 1 );
+
+        result.add( MenuFactory.newSimpleItem( constants.Pagination_For_Tables()).respondsWith( new Command() {
+            @Override
+            public void execute() {
+                placeManager.goTo( new DefaultPlaceRequest( "Experimental Paging" ) );
+            }
+        } ).endMenu().build().getItems().get( 0 ) );
+
+        return result;
+    }
+
     private List<? extends MenuItem> getProcessMGMTViews() {
         final List<MenuItem> result = new ArrayList<MenuItem>( 2 );
 
@@ -205,8 +219,12 @@ public class ShowcaseEntryPoint {
                 placeManager.goTo( new DefaultPlaceRequest( "Tasks" ) );
             }
         } ).endMenu().build().getItems().get( 0 ) );
-
-
+        result.add( MenuFactory.newSimpleItem( constants.Tasks_List_Admin() ).respondsWith( new Command() {
+            @Override
+            public void execute() {
+                placeManager.goTo( new DefaultPlaceRequest( "Tasks Admin" ) );
+            }
+        } ).endMenu().build().getItems().get( 0 ) );
         return result;
     }
 
@@ -220,7 +238,7 @@ public class ShowcaseEntryPoint {
             }
         } ).endMenu().build().getItems().get( 0 ) );
 
-        final String dashbuilderURL = DashboardURLBuilder.getDashboardURL("/dashbuilder/workspace", null, LocaleInfo.getCurrentLocale());
+        final String dashbuilderURL = DashboardURLBuilder.getDashboardURL("/dashbuilder/workspace", null, LocaleInfo.getCurrentLocale().getLocaleName());
         result.add( MenuFactory.newSimpleItem( constants.Business_Dashboard() ).respondsWith( new Command() {
             @Override
             public void execute() {

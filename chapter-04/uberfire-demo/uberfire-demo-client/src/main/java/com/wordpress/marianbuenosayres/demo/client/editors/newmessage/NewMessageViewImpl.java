@@ -12,8 +12,8 @@ import com.github.gwtbootstrap.client.ui.TextBox;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.user.client.ui.Composite;
-import com.wordpress.marianbuenosayres.demo.client.editors.newmessage.NewMessagePresenter.NewMessageView;
 import com.wordpress.marianbuenosayres.demo.client.i18n.Constants;
+import com.wordpress.marianbuenosayres.demo.client.editors.newmessage.NewMessagePresenter.NewMessageView;
 
 @Dependent
 @Templated(value = "NewMessageViewImpl.html")

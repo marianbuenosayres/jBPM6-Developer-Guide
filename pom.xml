@@ -9,7 +9,7 @@
   <url>http://marianbuenosayres.wordpress.com</url>
   <packaging>pom</packaging>
   <properties>
-    <kie.version>6.1.0.Beta2</kie.version>
+    <kie.version>6.1.0.Beta3</kie.version>
     <hibernate.version>4.2.3.Final</hibernate.version>
   </properties>
   <modules>
@@ -21,7 +21,7 @@
     <module>chapter-07</module>
     <module>chapter-08</module>
     <module>chapter-09</module>
-    <!--module>chapter-10</module-->
+    <module>chapter-10</module>
   </modules>
 
   <build>

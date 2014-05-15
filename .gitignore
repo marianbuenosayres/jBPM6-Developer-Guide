@@ -2,3 +2,5 @@ target/
 .*
 *.tlog
 *.db
+#created by Infinispan
+org.drools.persistence.info.EntityHolder/

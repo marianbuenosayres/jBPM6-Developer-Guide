@@ -15,8 +15,6 @@ import org.uberfire.client.mvp.PlaceManager;
 import org.uberfire.client.mvp.UberView;
 import org.uberfire.mvp.Command;
 import org.uberfire.mvp.impl.DefaultPlaceRequest;
-import org.uberfire.lifecycle.OnOpen;
-import org.uberfire.lifecycle.OnFocus;
 import org.uberfire.workbench.model.menu.MenuFactory;
 import org.uberfire.workbench.model.menu.Menus;
 
@@ -76,22 +74,12 @@ public class MessageListPresenter {
         }).getMessages();
     }
 
-    @OnOpen
-    public void onOpen() {
-        refreshMessages();
-    }
-
-    @OnFocus
-    public void onFocus() {
+    public void init() {
         refreshMessages();
     }
 
     public ListDataProvider<String> getDataProvider() {
         return dataProvider;
-    }
-
-    public void addDataDisplay(HasData<String> display) {
-        dataProvider.addDataDisplay(display);
     }
 
     public void refreshData() {

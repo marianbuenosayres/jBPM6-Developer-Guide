@@ -4,7 +4,6 @@ import javax.enterprise.context.ApplicationScoped;
 
 import org.uberfire.client.annotations.Perspective;
 import org.uberfire.client.annotations.WorkbenchPerspective;
-import org.uberfire.lifecycle.OnStartup;
 import org.uberfire.mvp.impl.DefaultPlaceRequest;
 import org.uberfire.workbench.model.PanelType;
 import org.uberfire.workbench.model.PerspectiveDefinition;
@@ -27,8 +26,4 @@ public class MessageListPerspective {
         return p;
     }
 
-    @OnStartup
-    public void init() {
-      //Do nothing
-    }
 }
