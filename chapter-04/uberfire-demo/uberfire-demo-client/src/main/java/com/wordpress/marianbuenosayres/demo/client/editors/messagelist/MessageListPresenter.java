@@ -5,7 +5,9 @@ import java.util.List;
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
+import org.jboss.errai.bus.client.api.messaging.Message;
 import org.jboss.errai.common.client.api.Caller;
+import org.jboss.errai.common.client.api.ErrorCallback;
 import org.jboss.errai.common.client.api.RemoteCallback;
 import org.uberfire.client.annotations.WorkbenchMenu;
 import org.uberfire.client.annotations.WorkbenchPartTitle;
@@ -13,6 +15,7 @@ import org.uberfire.client.annotations.WorkbenchPartView;
 import org.uberfire.client.annotations.WorkbenchScreen;
 import org.uberfire.client.mvp.PlaceManager;
 import org.uberfire.client.mvp.UberView;
+import org.uberfire.lifecycle.OnOpen;
 import org.uberfire.mvp.Command;
 import org.uberfire.mvp.impl.DefaultPlaceRequest;
 import org.uberfire.workbench.model.menu.MenuFactory;
@@ -22,8 +25,8 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.cellview.client.DataGrid;
 import com.google.gwt.view.client.HasData;
 import com.google.gwt.view.client.ListDataProvider;
-import com.wordpress.marianbuenosayres.demo.client.i18n.Constants;
 import com.wordpress.marianbuenosayres.api.service.DemoServiceEntryPoint;
+import com.wordpress.marianbuenosayres.demo.client.i18n.Constants;
 
 @Dependent
 @WorkbenchScreen(identifier = "uberFireDemoMessageListScreen")
@@ -35,6 +38,7 @@ public class MessageListPresenter {
 
         DataGrid<String> getDataGrid();
     }
+    
     private Constants constants = GWT.create( Constants.class );
     
     @Inject
@@ -71,10 +75,17 @@ public class MessageListPresenter {
                 dataProvider.setList(messages);
                 dataProvider.refresh();
             }
-        }).getMessages();
+        }, new ErrorCallback<Message>() {
+        	@Override
+        	public boolean error(Message message, Throwable throwable) {
+        		view.displayNotification("Error: Reading the list...");
+        		return true;
+        	}
+		}).getMessages();
     }
 
-    public void init() {
+    @OnOpen
+    public void onOpen() {
         refreshMessages();
     }
 
@@ -82,7 +93,11 @@ public class MessageListPresenter {
         return dataProvider;
     }
 
-    public void refreshData() {
+    public void addDataDisplay(HasData<String> display) {
+		dataProvider.addDataDisplay(display);
+	}
+
+	public void refreshData() {
         dataProvider.refresh();
     }
 
@@ -92,15 +107,12 @@ public class MessageListPresenter {
     }
 
     private void makeMenuBar() {
-        menus = MenuFactory
-                .newTopLevelMenu(constants.NewMessage())
-                .respondsWith(new Command() {
-                    @Override
-                    public void execute() {
-                        placeManager.goTo( new DefaultPlaceRequest( "uberFireDemoNewMessagePopup" ) );
-                        
-                    }
-                })
-                .endMenu().build();
+        menus = MenuFactory.newTopLevelMenu(constants.NewMessage()).respondsWith(new Command() {
+            @Override
+            public void execute() {
+                placeManager.goTo( new DefaultPlaceRequest( "uberFireDemoNewMessagePopup" ) );
+            }
+        })
+        .endMenu().build();
     }
 }

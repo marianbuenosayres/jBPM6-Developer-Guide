@@ -1,11 +1,9 @@
 package com.wordpress.marianbuenosayres.backend.server;
 
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
+import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 
@@ -18,6 +16,11 @@ import org.jboss.errai.bus.server.annotations.Service;
 public class DemoServiceEntryPointImpl implements DemoServiceEntryPoint {
 
     private List<String> messages = new ArrayList<String>();
+
+    @PostConstruct
+    public void init() {
+        
+    }
 
     @Override
     public List<String> getMessages() {

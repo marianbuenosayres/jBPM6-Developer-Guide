@@ -14,15 +14,15 @@ import org.uberfire.workbench.model.impl.PerspectiveDefinitionImpl;
  * A Perspective to show Messages 
  */
 @ApplicationScoped
-@WorkbenchPerspective(identifier = "uberFireDemoMessageListPerspective", isDefault = false)
+@WorkbenchPerspective(identifier = "uberFireDemoMessageListPerspective")
 public class MessageListPerspective {
     
     @Perspective
     public PerspectiveDefinition getPerspective() {
         final PerspectiveDefinition p = new PerspectiveDefinitionImpl(PanelType.ROOT_LIST);
-        p.setTransient(true);
         p.setName("My Customized panel of Messages");
         p.getRoot().addPart(new PartDefinitionImpl(new DefaultPlaceRequest("uberFireDemoMessageListScreen")));
+        p.setTransient(true);
         return p;
     }
 

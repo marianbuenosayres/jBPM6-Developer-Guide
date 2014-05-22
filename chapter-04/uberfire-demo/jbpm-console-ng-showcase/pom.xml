@@ -693,6 +693,10 @@
             <compileSourcesArtifact>org.guvnor:guvnor-services-api</compileSourcesArtifact>
             <compileSourcesArtifact>org.guvnor:guvnor-project-api</compileSourcesArtifact>
 
+            <!-- DEPENDENCIES WE ADDED TO HAVE OUR OWN SCREENS -->
+            <compileSourcesArtifact>com.wordpress.marianbuenosayres:uberfire-demo-api</compileSourcesArtifact>
+            <compileSourcesArtifact>com.wordpress.marianbuenosayres:uberfire-demo-client</compileSourcesArtifact>
+
             <!-- Common dependencies -->
             <compileSourcesArtifact>org.kie.workbench.screens:kie-wb-common-project-editor-api</compileSourcesArtifact>
             <compileSourcesArtifact>org.kie.workbench.screens:kie-wb-common-project-editor-client</compileSourcesArtifact>
@@ -747,16 +751,10 @@
             <compileSourcesArtifact>org.jbpm:jbpm-console-ng-dashboard-api</compileSourcesArtifact>
             <compileSourcesArtifact>org.jbpm:jbpm-console-ng-dashboard-client</compileSourcesArtifact>
 
-
             <compileSourcesArtifact>org.jbpm:jbpm-form-modeler-editor-api</compileSourcesArtifact>
             <compileSourcesArtifact>org.jbpm:jbpm-form-modeler-editor-client</compileSourcesArtifact>
             <compileSourcesArtifact>org.jbpm:jbpm-form-modeler-renderer-api</compileSourcesArtifact>
             <compileSourcesArtifact>org.jbpm:jbpm-form-modeler-renderer-client</compileSourcesArtifact>
-
-
-            <!-- DEPENDENCIES WE ADDED TO HAVE OUR OWN SCREENS -->
-           <compileSourcesArtifact>com.wordpress.marianbuenosayres:uberfire-demo-api</compileSourcesArtifact>
-           <compileSourcesArtifact>com.wordpress.marianbuenosayres:uberfire-demo-client</compileSourcesArtifact>
 
           </compileSourcesArtifacts>
           <runTarget>org.jbpm.console.ng.jBPMShowcase/jBPM.html</runTarget>

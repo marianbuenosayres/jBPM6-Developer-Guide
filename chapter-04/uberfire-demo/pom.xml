@@ -24,10 +24,10 @@
    
   <profiles>
     <profile>
-      <id>deployProfile</id>
+      <id>showcaseProfile</id>
       <activation>
         <property>
-          <name>deploy</name>
+          <name>showcase</name>
         </property>
       </activation>
       <modules>

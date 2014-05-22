@@ -20,6 +20,10 @@
   <inherits name="org.guvnor.common.services.workingset.GuvnorWorkingsetAPI"/>
   <inherits name="org.guvnor.common.services.workingset.GuvnorWorkingsetClient"/>
 
+  <!-- MODULES WE ADD TO HAVE OUR OWN SCREENS -->
+  <inherits name="com.wordpress.marianbuenosayres.api.UberfireDemoAPI"/>
+  <inherits name="com.wordpress.marianbuenosayres.demo.UberfireDemoClient"/>
+
   <!--Common Screens -->
   <inherits name="org.kie.workbench.common.screens.explorer.KieWorkbenchProjectExplorerClient"/>
   <inherits name="org.kie.workbench.common.screens.projecteditor.KieWorkbenchCommonProjectEditorClient"/>
@@ -54,10 +58,6 @@
   <!-- Dashbuilder -->
    <inherits name="org.jbpm.dashboard.renderer.DashboardRendererApi"/>
    <inherits name="org.jbpm.dashboard.renderer.client.DashboardRendererClient"/>
-
-  <!-- MODULES WE ADD TO HAVE OUR OWN SCREENS -->
-  <inherits name="com.wordpress.marianbuenosayres.api.UberfireDemoAPI"/>
-  <inherits name="com.wordpress.marianbuenosayres.demo.UberfireDemoClient"/>
 
   <!-- Specify the application specific style sheet. -->
   <stylesheet src='css/uberfire-showcase.css' />
