@@ -15,7 +15,11 @@
   <name>Chapter 10: WorkItemHandler's module to add</name>
 
   <dependencies>
-    <!-- Internal dependencies -->
+    <dependency>
+      <groupId>org.jbpm</groupId>
+      <artifactId>jbpm-flow</artifactId>
+      <version>${kie.version}</version>
+    </dependency>
   </dependencies>
 
 </project>

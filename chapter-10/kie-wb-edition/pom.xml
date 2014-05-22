@@ -54,6 +54,11 @@
       <artifactId>web-service-module</artifactId>
       <version>${project.version}</version>
     </dependency>
+    <dependency>
+      <groupId>com.wordpress.marianbuenosayres</groupId>
+      <artifactId>custom-work-item-handlers</artifactId>
+      <version>${project.version}</version>
+    </dependency>
   </dependencies>
 
 </project>

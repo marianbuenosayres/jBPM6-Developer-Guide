@@ -23,6 +23,7 @@
       <includes>
         <!-- We add our extra JAR to WEB-INF/lib -->
         <include>com.wordpress.marianbuenosayres:web-service-module:jar</include>
+        <include>com.wordpress.marianbuenosayres:custom-work-item-handlers:jar</include>
       </includes>
       <unpack>false</unpack>
       <outputDirectory>WEB-INF/lib</outputDirectory>

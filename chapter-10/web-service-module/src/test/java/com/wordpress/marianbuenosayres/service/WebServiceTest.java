@@ -40,7 +40,6 @@ public class WebServiceTest {
 		URL wsdlLocation = new URL("http://localhost:9191/jbpmWebService?wsdl");
 		QName serviceName = new QName("com.wordpress.marianbuenosayres.service", "Service");
 		Service service = Service.create(wsdlLocation, serviceName);
-	    QName portQN = new QName("WebServicePort");
 	    this.client = service.getPort(RuntimeManagerWebService.class);
 	}
 	
