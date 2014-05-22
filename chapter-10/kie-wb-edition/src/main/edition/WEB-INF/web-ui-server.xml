@@ -53,6 +53,18 @@
     <url-pattern>/stencilset/*</url-pattern>
   </filter-mapping>
 
+  <!-- ADDED WEB SERVICE -->
+  <servlet>
+    <display-name>rmWebService</display-name>
+    <servlet-name>rmWebService</servlet-name>
+    <servlet-class>com.wordpress.marianbuenosayres.service.RuntimeManagerWebService</servlet-class>
+  </servlet>
+
+  <servlet-mapping>
+    <servlet-name>rmWebService</servlet-name>
+    <url-pattern>/rmWebService</url-pattern>
+  </servlet-mapping>
+
   <!-- UberFire servlets -->
   <servlet>
     <servlet-name>UberFireServlet</servlet-name>

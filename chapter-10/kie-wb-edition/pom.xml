@@ -17,37 +17,6 @@
 
   <build>
     <plugins>
-      <!-- special handling for WAS8.5 as sisu-inject-bean:2.2.3 contains javax.inject classes which conflicts with WAS-->
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-shade-plugin</artifactId>
-        <version>2.2</version>
-        <configuration>
-          <outputFile>${project.build.directory}/lib/nojavax-sisu-inject-bean.jar</outputFile>
-          <artifactSet>
-            <includes>
-              <include>org.sonatype.sisu:sisu-inject-bean</include>
-            </includes>
-          </artifactSet>
-          <filters>
-            <filter>
-              <artifact>org.sonatype.sisu:sisu-inject-bean</artifact>
-              <excludes>
-                <exclude>javax/**</exclude>
-              </excludes>
-            </filter>
-          </filters>
-        </configuration>
-        <executions>
-          <execution>
-            <phase>package</phase>
-            <goals>
-              <goal>shade</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
-      <!-- end of WAS 8.5 specific handling -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-assembly-plugin</artifactId>
@@ -73,55 +42,18 @@
     <!-- Internal dependencies -->
     <dependency>
       <groupId>org.kie</groupId>
-      <artifactId>kie-wb-webapp</artifactId>
+      <artifactId>kie-wb-distribution-wars</artifactId>
       <version>${kie.version}</version>
       <type>war</type>
+      <classifier>jboss-as7</classifier>
     </dependency>
 
-    <!-- External dependencies -->
+    <!-- Extra service modules -->
     <dependency>
-      <groupId>org.apache.ant</groupId>
-      <artifactId>ant</artifactId>
-      <version>1.8.2</version>
+      <groupId>com.wordpress.marianbuenosayres</groupId>
+      <artifactId>web-service-module</artifactId>
+      <version>${project.version}</version>
     </dependency>
-    <!--dependency>
-      <groupId>org.jboss.resteasy</groupId>
-      <artifactId>jaxrs-api</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.jboss.resteasy</groupId>
-      <artifactId>resteasy-jaxrs</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.jboss.resteasy</groupId>
-      <artifactId>resteasy-cdi</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.hibernate</groupId>
-      <artifactId>hibernate-entitymanager</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.hibernate</groupId>
-      <artifactId>hibernate-core</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.hibernate.common</groupId>
-      <artifactId>hibernate-commons-annotations</artifactId>
-      <version>4.0.1.Final</version>
-    </dependency>
-    <dependency>
-      <groupId>antlr</groupId>
-      <artifactId>antlr</artifactId>
-      <version>2.7.7</version>
-    </dependency>
-    <dependency>
-      <groupId>org.hibernate</groupId>
-      <artifactId>hibernate-validator</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.hibernate.common</groupId>
-      <artifactId>hibernate-commons-annotations</artifactId>
-    </dependency-->
   </dependencies>
 
 </project>
