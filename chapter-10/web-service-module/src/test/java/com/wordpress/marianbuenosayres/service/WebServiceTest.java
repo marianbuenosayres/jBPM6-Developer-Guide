@@ -2,7 +2,6 @@ package com.wordpress.marianbuenosayres.service;
 
 import java.net.URL;
 import java.util.HashMap;
-import java.util.Map;
 
 import javax.xml.namespace.QName;
 import javax.xml.ws.Endpoint;
@@ -76,11 +75,11 @@ public class WebServiceTest {
 		processInstance.setProcessId("Evaluation");
 		EasyMock.expect(ksession.startProcess(
 				EasyMock.eq("Evaluation"), 
-				EasyMock.anyObject(Map.class))).andReturn(processInstance).once();
+				EasyMock.anyObject(HashMap.class))).andReturn(processInstance).once();
 		
 		EasyMock.replay(ksession, this.engine);
 		
-		Map<String, Object> parameters = new HashMap<String, Object>();
+		HashMap<String, Object> parameters = new HashMap<String, Object>();
 		parameters.put("userId", "krisv");
 		JaxbProcessInstanceResponse response = client.startProcess(
 				"org.jbpm:jbpm-playground:1.0", "Evaluation", parameters);

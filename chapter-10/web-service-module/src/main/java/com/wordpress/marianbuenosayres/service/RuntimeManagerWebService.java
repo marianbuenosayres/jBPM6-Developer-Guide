@@ -1,6 +1,6 @@
 package com.wordpress.marianbuenosayres.service;
 
-import java.util.Map;
+import java.util.HashMap;
 
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
@@ -15,7 +15,7 @@ public interface RuntimeManagerWebService {
 	JaxbProcessInstanceResponse startProcess(
 			@WebParam(name = "releaseId") String releaseId, 
 			@WebParam(name = "processId") String processId, 
-			@WebParam(name = "parameters") Map<String, Object> parameters);
+			@WebParam(name = "parameters") HashMap<String, Object> parameters);
 
 	@WebMethod
 	void signalEventAll(

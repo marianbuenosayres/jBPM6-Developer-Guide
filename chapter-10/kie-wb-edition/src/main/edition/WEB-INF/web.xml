@@ -76,7 +76,7 @@
 
   <servlet-mapping>
     <servlet-name>rmWebService</servlet-name>
-    <url-pattern>/rmWebService</url-pattern>
+    <url-pattern>/RuntimeManagerWebServiceImpl</url-pattern>
   </servlet-mapping>   
   
   <!-- UberFire servlets -->

@@ -1,6 +1,6 @@
 package com.wordpress.marianbuenosayres.service;
 
-import java.util.Map;
+import java.util.HashMap;
 
 import javax.jws.WebService;
 
@@ -22,10 +22,13 @@ import org.kie.services.client.serialization.jaxb.impl.process.JaxbProcessInstan
 public class RuntimeManagerWebServiceImpl implements RuntimeManagerWebService {
 
 	@Override
-	public JaxbProcessInstanceResponse startProcess(String releaseId, String processId, Map<String, Object> parameters) {
+	public JaxbProcessInstanceResponse startProcess(String releaseId, String processId, HashMap<String, Object> parameters) {
 		RuntimeEngine engine = getRuntimeEngine(releaseId);
-		ProcessInstance processInstance = engine.getKieSession().startProcess(processId, parameters);
-		return new JaxbProcessInstanceResponse(processInstance);
+		if (engine != null) {
+			ProcessInstance processInstance = engine.getKieSession().startProcess(processId, parameters);
+			return new JaxbProcessInstanceResponse(processInstance);
+		} 
+		return null;
 	}
 
 	@Override
@@ -46,10 +49,12 @@ public class RuntimeManagerWebServiceImpl implements RuntimeManagerWebService {
 	@Override
 	public void signalEventPerInstanceWithData(String releaseId, Long processInstanceId, String signalRef, Object parameter) {
 		RuntimeEngine engine = getRuntimeEngine(releaseId, processInstanceId);
-		if (processInstanceId == null) {
-			engine.getKieSession().signalEvent(signalRef, parameter);
-		} else {
-			engine.getKieSession().signalEvent(signalRef, parameter, processInstanceId);
+		if (engine != null) {
+			if (processInstanceId == null) {
+				engine.getKieSession().signalEvent(signalRef, parameter);
+			} else {
+				engine.getKieSession().signalEvent(signalRef, parameter, processInstanceId);
+			}
 		}
 	}
 
@@ -63,8 +68,11 @@ public class RuntimeManagerWebServiceImpl implements RuntimeManagerWebService {
 		if (processInstanceId != null && manager instanceof PerProcessInstanceRuntimeManager) {
 			context = ProcessInstanceIdContext.get(processInstanceId);
 		}
-		RuntimeEngine engine = manager.getRuntimeEngine(context);
-		return engine;
+		if (manager != null) {
+			RuntimeEngine engine = manager.getRuntimeEngine(context);
+			return engine;
+		}
+		return null;
 	}
 	
 	
