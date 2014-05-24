@@ -29,7 +29,7 @@ import com.wordpress.marianbuenosayres.api.service.DemoServiceEntryPoint;
 import com.wordpress.marianbuenosayres.demo.client.i18n.Constants;
 
 @Dependent
-@WorkbenchScreen(identifier = "uberFireDemoMessageListScreen")
+@WorkbenchScreen(identifier = "UberFire Message Screen")
 public class MessageListPresenter {
 
     public interface MessageListView extends UberView<MessageListPresenter> {
@@ -60,7 +60,7 @@ public class MessageListPresenter {
 
     @WorkbenchPartTitle
     public String getTitle() {
-        return "My Customized Message List";
+        return "UberFire Message Screen";
     }
 
     @WorkbenchPartView
@@ -110,7 +110,7 @@ public class MessageListPresenter {
         menus = MenuFactory.newTopLevelMenu(constants.NewMessage()).respondsWith(new Command() {
             @Override
             public void execute() {
-                placeManager.goTo( new DefaultPlaceRequest( "uberFireDemoNewMessagePopup" ) );
+                placeManager.goTo( new DefaultPlaceRequest( "UberFire Message Popup" ) );
             }
         })
         .endMenu().build();
