@@ -20,6 +20,11 @@
       <artifactId>jbpm-flow</artifactId>
       <version>${kie.version}</version>
     </dependency>
+    <dependency>
+      <groupId>org.jbpm</groupId>
+      <artifactId>jbpm-executor</artifactId>
+      <version>${kie.version}</version>
+    </dependency>
   </dependencies>
 
 </project>
