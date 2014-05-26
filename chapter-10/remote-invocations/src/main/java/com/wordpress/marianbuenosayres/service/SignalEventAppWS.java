@@ -6,7 +6,7 @@ import java.util.HashMap;
 import javax.xml.namespace.QName;
 import javax.xml.ws.Service;
 
-public class InvokeWebServiceApp {
+public class SignalEventAppWS {
 
 	/**
 	 * In order to invoke this class, you should:
