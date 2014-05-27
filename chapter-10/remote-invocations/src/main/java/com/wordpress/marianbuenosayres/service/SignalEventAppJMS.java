@@ -1,8 +1,7 @@
 package com.wordpress.marianbuenosayres.service;
 
-import javax.jms.QueueConnection;
+import javax.jms.Queue;
 import javax.jms.QueueConnectionFactory;
-import javax.jms.QueueSession;
 import javax.naming.InitialContext;
 
 import org.kie.api.runtime.manager.RuntimeEngine;
@@ -21,18 +20,18 @@ public class SignalEventAppJMS {
         }
         try {
             System.out.println("Creating JMS context ...");
-            QueueConnectionFactory connFactory = (QueueConnectionFactory) new InitialContext().lookup("jms/ConnectionFactory");
-            QueueConnection qconnection = connFactory.createQueueConnection();
-            QueueSession qsession = qconnection.createQueueSession(true, 1);
+            InitialContext ctx = new InitialContext();
+            QueueConnectionFactory connFactory = (QueueConnectionFactory) ctx.lookup("jms/RemoteConnectionFactory");
+            Queue ksessionQueue = (Queue) ctx.lookup("jms/queue/KIE.SESSION");
+            Queue taskQueue = (Queue) ctx.lookup("jms/queue/KIE.TASK");
+            Queue responseQueue = (Queue) ctx.lookup("jms/queue/KIE.RESPONSE");
             System.out.println("Creating JMS Runtime Factory...");
             
             RuntimeEngine engine = RemoteJmsRuntimeEngineFactoryBuilderImpl.newBuilder().
-            	addDeploymentId("org.jbpm:HR:1.0").
-            	addConnectionFactory(connFactory).
-        		addKieSessionQueue(qsession.createQueue("jms/queue/KIE.SESSION")).
-        		addTaskServiceQueue(qsession.createQueue("jms/queue/KIE.TASK")).
-        		addUserName("mariano").addPassword("mypass")
-        	.build().newRuntimeEngine();
+            	addDeploymentId("org.jbpm:HR:1.0").addConnectionFactory(connFactory).
+        	addKieSessionQueue(ksessionQueue).addTaskServiceQueue(taskQueue).
+        	addResponseQueue(responseQueue).addUserName("mariano").addPassword("mypass").
+        	build().newRuntimeEngine();
 
             engine.getKieSession().signalEvent("my-signal", null);
         } catch (Exception e) {

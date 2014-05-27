@@ -17,7 +17,7 @@
     <profile>
       <id>ws</id>
       <build>
-        <defaultGoal>exec:exec</defaultGoal>
+        <defaultGoal>clean install exec:exec</defaultGoal>
         <plugins>
           <plugin>
             <groupId>org.codehaus.mojo</groupId>
@@ -46,7 +46,7 @@
     <profile>
       <id>rest</id>
       <build>
-        <defaultGoal>exec:exec</defaultGoal>
+        <defaultGoal>clean install exec:exec</defaultGoal>
         <plugins>
           <plugin>
             <groupId>org.codehaus.mojo</groupId>
@@ -75,7 +75,7 @@
     <profile>
       <id>jms</id>
       <build>
-        <defaultGoal>exec:exec</defaultGoal>
+        <defaultGoal>clean install exec:exec</defaultGoal>
         <plugins>
           <plugin>
             <groupId>org.codehaus.mojo</groupId>
@@ -97,9 +97,24 @@
           <artifactId>kie-services-client</artifactId>
           <version>${kie.version}</version>
         </dependency>
+        <dependency>
+          <groupId>org.jboss.as</groupId>
+          <artifactId>jboss-as-appclient</artifactId>
+          <version>7.1.1.Final</version>
+        </dependency>
       </dependencies>
     </profile>
   </profiles>
+
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>org.apache.httpcomponents</groupId>
+        <artifactId>httpclient</artifactId>
+        <version>4.2.2</version>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
 
   <dependencies>
     <dependency>
@@ -111,6 +126,11 @@
       <groupId>org.kie.remote</groupId>
       <artifactId>kie-services-client</artifactId>
       <version>${kie.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.jboss.as</groupId>
+      <artifactId>jboss-as-appclient</artifactId>
+      <version>7.1.1.Final</version>
     </dependency>
   </dependencies>
 </project>

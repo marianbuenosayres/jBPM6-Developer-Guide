@@ -20,8 +20,9 @@ public class SignalEventAppREST {
             System.out.println("Creating REST Runtime Factory...");
             RuntimeEngine engine = RemoteRestRuntimeEngineFactoryBuilderImpl.newBuilder().
             	addUrl(new URL("http://localhost:8080/kie-wb")).
-            	addUserName("mariano").addPassword("mypass")
-            	.build().newRuntimeEngine();
+                addDeploymentId("org.jbpm:HR:1.0").
+            	addUserName("mariano").addPassword("mypass").
+            	build().newRuntimeEngine();
             engine.getKieSession().signalEvent("my-signal", null);
         } catch (Exception e) {
             System.out.println("An error has occurred: " + e.getMessage());
