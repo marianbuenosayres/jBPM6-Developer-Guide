@@ -16,6 +16,7 @@
     <module>web-service-module</module>
     <module>custom-work-item-handlers</module>
     <module>kie-wb-edition</module>
+    <module>remote-invocations</module>
   </modules>
 
 </project>

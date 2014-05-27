@@ -113,6 +113,16 @@
         <artifactId>httpclient</artifactId>
         <version>4.2.2</version>
       </dependency>
+      <dependency>
+        <groupId>org.hornetq</groupId>
+        <artifactId>hornetq-jms-client</artifactId>
+        <version>2.2.13.Final</version>
+      </dependency>
+      <dependency>
+        <groupId>org.hornetq</groupId>
+        <artifactId>hornetq-core</artifactId>
+        <version>2.2.13.Final</version>
+      </dependency>
     </dependencies>
   </dependencyManagement>
 
