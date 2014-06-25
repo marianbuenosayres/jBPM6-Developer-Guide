@@ -4,12 +4,12 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>com.wordpress.marianbuenosayres</groupId>
-    <artifactId>chapter-04</artifactId>
+    <artifactId>appendix-a</artifactId>
     <version>1.0-SNAPSHOT</version>
   </parent>
   <artifactId>uberfire-demo</artifactId>
   <packaging>pom</packaging>
-  <name>Chapter 04 :: Uberfire Demo</name>
+  <name>Appendix A :: Uberfire Demo</name>
 
   <properties>
     <uberfire.version>0.4.0.Beta4</uberfire.version>

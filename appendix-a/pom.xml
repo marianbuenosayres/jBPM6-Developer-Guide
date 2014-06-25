@@ -9,11 +9,11 @@
     <version>1.0-SNAPSHOT</version>
   </parent>
   <packaging>pom</packaging>
-  <artifactId>chapter-04</artifactId>
-  <name>Chapter 04</name>
+  <artifactId>appendix-a</artifactId>
+  <name>Appendix A</name>
 
   <modules>
-    <module>kie-wb-installer</module>
+    <module>uberfire-demo</module>
   </modules>
 
 </project>

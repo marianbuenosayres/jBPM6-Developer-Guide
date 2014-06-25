@@ -97,10 +97,10 @@ public class ShowcaseEntryPoint {
                 .newTopLevelMenu( constants.Deploy() ).withItems( getDeploymentViews() ).endMenu()
                 .newTopLevelMenu( constants.Process_Management() ).withItems( getProcessMGMTViews() ).endMenu()
                 //ADDS MY ADDED ITEMS
-                .newTopLevelMenu( "MY ADDED ITEMS").withItems ( getMyAddedItems() ).endMenu()
                 .newTopLevelMenu( constants.Work() ).withItems( getWorkViews() ).endMenu()
                 .newTopLevelMenu( constants.Dashboards() ).withItems( getDashboardsViews() ).endMenu()
                 .newTopLevelMenu( constants.Experimental() ).withItems( getExperimentalViews() ).endMenu()
+                .newTopLevelMenu( "BOOK DEMO" ).withItems ( getBookDemoItems() ).endMenu()
                 .newTopLevelMenu( constants.User()+": "+identity.getName() ).position(MenuPosition.RIGHT).withItems( getRoles() ).endMenu()
                 .build();
 
@@ -144,10 +144,10 @@ public class ShowcaseEntryPoint {
         return result;
     }
 
-    private List<? extends MenuItem> getMyAddedItems() {
+    private List<? extends MenuItem> getBookDemoItems() {
         final List<MenuItem> result = new ArrayList<MenuItem>( 1 );
 
-        result.add( MenuFactory.newSimpleItem( "UberFire Demo Messages" ).respondsWith( new Command() {
+        result.add( MenuFactory.newSimpleItem( "Demo for Book" ).respondsWith( new Command() {
             @Override
             public void execute() {
                 placeManager.goTo( new DefaultPlaceRequest( "UberFire Demo Messages" ) );
