@@ -27,6 +27,11 @@ import org.kie.internal.runtime.manager.SessionFactory;
 import org.kie.internal.runtime.manager.TaskServiceFactory;
 import org.kie.internal.task.api.InternalTaskService;
 
+/**
+ * Implements a RuntimeManager which will manage sessions on a per process definition basis.
+ * It is created following the structure of the PerProcessInstanceRuntimeManager, but changing
+ * IDs to be managed through process definition ID instead of process instance ID.
+ */
 public class PerProcessDefinitionRuntimeManager extends AbstractRuntimeManager {
     private SessionFactory factory;
     private TaskServiceFactory taskServiceFactory;
@@ -51,32 +56,38 @@ public class PerProcessDefinitionRuntimeManager extends AbstractRuntimeManager {
         Object contextId = context.getContextId();
         Integer ksessionId = null;
         KieSession ksession = null;
+        //If no context is used (EmptyContext) we asume we need to create a new KIE Session.
         if (contextId == null) {
         	ksession = factory.newKieSession();
         	ksessionId = ksession.getId();
-        } else {
+        } else { //Otherwhise, we try to find it through the database or thread local variables
         	RuntimeEngine localRuntime = findLocalRuntime(contextId);
         	if (localRuntime != null) {
         		return localRuntime;
         	}
         	ksessionId = mapper.findMapping(context, getIdentifier());
-        	if (ksessionId == null) {
+        	if (ksessionId == null) { //if we cannot find a KIE session, we will create one
         		ksession = factory.newKieSession();
         		ksessionId = ksession.getId();
         	} else {
         		ksession = factory.findKieSessionById(ksessionId);
         	}
         }
+        //After we created the KIE Session, we will create a new TaskService. Since it is basically
+        //a stateless service connected to a database, we don't need to check any configurations, but
+        //use them directly instead to create a new TaskService very time
         InternalTaskService internalTaskService = (InternalTaskService) taskServiceFactory.newTaskService();
+        //Configures connections between the task service and the runtime manager
         configureRuntimeOnTaskService(internalTaskService);
         RuntimeEngine runtime = new RuntimeEngineImpl(ksession, internalTaskService);
         ((RuntimeEngineImpl) runtime).setManager(this);
+        //used to clear internal data once a transaction in the KIE Session or Task Service is commited
         registerDisposeCallback(runtime, new DisposeSessionTransactionSynchronization(this, runtime));
         registerItems(runtime);
         attachManager(runtime);
-        
+        //We store it in a thread local after creating all the configuration (for caching purposes) 
         saveLocalRuntime(contextId, runtime);
-        
+        //This event listener will keep a register of the mapping between process definition ID and KIE Session ID:
         ksession.addEventListener(new MaintainMappingListener(ksessionId));
         return runtime;
     }
@@ -135,7 +146,8 @@ public class PerProcessDefinitionRuntimeManager extends AbstractRuntimeManager {
         @Override
         public void beforeProcessStarted(ProcessStartedEvent event) {
         	String processId = event.getProcessInstance().getProcessId();
-        	if (mapper.findContextId(ksessionId, getIdentifier()) == null) {
+        	if (mapper.findContextId(ksessionId, getIdentifier()) == null) { 
+                        //if no relation between process def ID and KIE Session is found, we store it
         		mapper.saveMapping(ProcessDefContext.get(processId), ksessionId, getIdentifier());
         	}
         }
@@ -214,6 +226,9 @@ public class PerProcessDefinitionRuntimeManager extends AbstractRuntimeManager {
 
             @Override
             public Void execute(org.kie.internal.command.Context context) {
+                //This command is used to register a transaction interceptor, which will destroy the 
+                //internal KIE Session of a persistent session when the transaction is completed. It is
+                //used by the Drools and jBPM code to clean up elements in memory fast
                 final KieSession ksession = ((KnowledgeCommandContext) context).getKieSession();
                 if (hasEnvironmentEntry("IS_JTA_TRANSACTION", false)) {
                 	ksession.destroy();

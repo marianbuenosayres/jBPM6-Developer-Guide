@@ -52,6 +52,8 @@ public class PerProcessDefinitionRuntimeManagerTest {
 			.registerableItemsFactory(factory)
 			.get();
 
+                //Please see the comments in CustomRMFactory and PerProcessDefinitionRuntimeManager
+                //to further analyze how the code is written
 		RuntimeManager manager = CustomRMFactory.getInstance().
 			newPerProcessDefinitionRuntimeManager(environment, "test-A");        
 
@@ -72,6 +74,8 @@ public class PerProcessDefinitionRuntimeManagerTest {
 			.registerableItemsFactory(factory)
 			.get();
 
+                //Please see the comments in CustomRMFactory and PerProcessDefinitionRuntimeManager
+                //to further analyze how the code is written
 		RuntimeManager manager = CustomRMFactory.getInstance().
 			newPerProcessDefinitionRuntimeManager(environment, "test-B");        
 
@@ -92,6 +96,8 @@ public class PerProcessDefinitionRuntimeManagerTest {
 			.registerableItemsFactory(factory)
 			.get();
 
+                //Please see the comments in CustomRMFactory and PerProcessDefinitionRuntimeManager
+                //to further analyze how the code is written
 		RuntimeManager manager = CustomRMFactory.getInstance().
 			newPerProcessDefinitionRuntimeManager(environment, "test-C");        
 
