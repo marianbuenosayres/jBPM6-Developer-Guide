@@ -39,6 +39,7 @@
           <!-- These are the added files to the configuration, that we need to replace -->
           <exclude>WEB-INF/classes/META-INF/CustomWorkItemHandlers.conf</exclude>
           <exclude>WEB-INF/web.xml</exclude>
+          <exclude>WEB-INF/jboss-web.xml</exclude>
           <exclude>WEB-INF/web-ui-server.xml</exclude>
         </excludes>
       </unpackOptions>
