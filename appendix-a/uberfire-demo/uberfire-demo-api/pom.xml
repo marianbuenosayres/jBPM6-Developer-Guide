@@ -11,7 +11,7 @@
   <artifactId>uberfire-demo-api</artifactId>
   <packaging>jar</packaging>
 
-  <name>Chapter 04 :: Uberfire Demo: API</name>
+  <name>Appendix A :: Uberfire Demo: API</name>
 
   <dependencies>
     <dependency>

@@ -29,7 +29,7 @@ import com.wordpress.marianbuenosayres.api.service.DemoServiceEntryPoint;
 import com.wordpress.marianbuenosayres.demo.client.i18n.Constants;
 
 @Dependent
-@WorkbenchScreen(identifier = "UberFire Message Screen")
+@WorkbenchScreen(identifier = "BookDemoMessageScreen")
 public class MessageListPresenter {
 
     public interface MessageListView extends UberView<MessageListPresenter> {
@@ -60,7 +60,7 @@ public class MessageListPresenter {
 
     @WorkbenchPartTitle
     public String getTitle() {
-        return "UberFire Message Screen";
+        return "Book Demo Message Screen";
     }
 
     @WorkbenchPartView
@@ -76,12 +76,12 @@ public class MessageListPresenter {
                 dataProvider.refresh();
             }
         }, new ErrorCallback<Message>() {
-        	@Override
-        	public boolean error(Message message, Throwable throwable) {
-        		view.displayNotification("Error: Reading the list...");
-        		return true;
-        	}
-		}).getMessages();
+            @Override
+            public boolean error(Message message, Throwable throwable) {
+                view.displayNotification("Error: Reading the list...");
+                return true;
+            }
+	}).getMessages();
     }
 
     @OnOpen
@@ -94,10 +94,10 @@ public class MessageListPresenter {
     }
 
     public void addDataDisplay(HasData<String> display) {
-		dataProvider.addDataDisplay(display);
-	}
+        dataProvider.addDataDisplay(display);
+    }
 
-	public void refreshData() {
+    public void refreshData() {
         dataProvider.refresh();
     }
 
@@ -110,7 +110,7 @@ public class MessageListPresenter {
         menus = MenuFactory.newTopLevelMenu(constants.NewMessage()).respondsWith(new Command() {
             @Override
             public void execute() {
-                placeManager.goTo( new DefaultPlaceRequest( "UberFire Message Popup" ) );
+                placeManager.goTo( new DefaultPlaceRequest( "BookDemoMessagePopup" ) );
             }
         })
         .endMenu().build();

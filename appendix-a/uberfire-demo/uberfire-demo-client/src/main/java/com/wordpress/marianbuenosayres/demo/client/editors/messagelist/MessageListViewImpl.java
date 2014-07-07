@@ -101,3 +101,4 @@ public class MessageListViewImpl extends Composite implements MessageListPresent
         return messageListGrid;
     }
 }
+

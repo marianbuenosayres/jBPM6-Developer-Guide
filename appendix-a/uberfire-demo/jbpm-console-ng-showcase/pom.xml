@@ -693,10 +693,6 @@
             <compileSourcesArtifact>org.guvnor:guvnor-services-api</compileSourcesArtifact>
             <compileSourcesArtifact>org.guvnor:guvnor-project-api</compileSourcesArtifact>
 
-            <!-- DEPENDENCIES WE ADDED TO HAVE OUR OWN SCREENS -->
-            <compileSourcesArtifact>com.wordpress.marianbuenosayres:uberfire-demo-api</compileSourcesArtifact>
-            <compileSourcesArtifact>com.wordpress.marianbuenosayres:uberfire-demo-client</compileSourcesArtifact>
-
             <!-- Common dependencies -->
             <compileSourcesArtifact>org.kie.workbench.screens:kie-wb-common-project-editor-api</compileSourcesArtifact>
             <compileSourcesArtifact>org.kie.workbench.screens:kie-wb-common-project-editor-client</compileSourcesArtifact>
@@ -731,6 +727,10 @@
             <compileSourcesArtifact>org.uberfire:uberfire-workbench-client</compileSourcesArtifact>
             <compileSourcesArtifact>org.uberfire:uberfire-workbench-client-backend</compileSourcesArtifact>
             <compileSourcesArtifact>org.uberfire:uberfire-backend-api</compileSourcesArtifact>
+
+            <!-- DEPENDENCIES WE ADDED TO HAVE OUR OWN SCREENS -->
+            <compileSourcesArtifact>com.wordpress.marianbuenosayres:uberfire-demo-api</compileSourcesArtifact>
+            <compileSourcesArtifact>com.wordpress.marianbuenosayres:uberfire-demo-client</compileSourcesArtifact>
 
             <!-- jBPM Console -->
             <compileSourcesArtifact>org.jbpm:jbpm-console-ng-bpm-home-client</compileSourcesArtifact>

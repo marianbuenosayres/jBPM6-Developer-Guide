@@ -31,6 +31,7 @@ import com.google.gwt.dom.client.Style;
 import com.google.gwt.i18n.client.LocaleInfo;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.RootPanel;
+import com.wordpress.marianbuenosayres.demo.client.perspectives.MessageListPerspective;
 import org.jboss.errai.ioc.client.api.AfterInitialization;
 import org.jboss.errai.ioc.client.api.EntryPoint;
 import org.jboss.errai.ioc.client.container.IOCBeanDef;
@@ -150,7 +151,7 @@ public class ShowcaseEntryPoint {
         result.add( MenuFactory.newSimpleItem( "Demo for Book" ).respondsWith( new Command() {
             @Override
             public void execute() {
-                placeManager.goTo( new DefaultPlaceRequest( "UberFire Demo Messages" ) );
+                placeManager.goTo( "BookDemoMessages" );
             }
         } ).endMenu().build().getItems().get( 0 ) );
 
