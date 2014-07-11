@@ -4,7 +4,6 @@ import java.util.Comparator;
 
 import javax.enterprise.context.Dependent;
 import javax.enterprise.event.Event;
-import javax.enterprise.event.Observes;
 import javax.inject.Inject;
 
 import org.jboss.errai.ui.shared.api.annotations.DataField;
@@ -20,7 +19,6 @@ import com.google.gwt.user.cellview.client.DataGrid;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.LayoutPanel;
 import com.google.gwt.user.client.ui.RequiresResize;
-import com.wordpress.marianbuenosayres.api.model.events.NewMessageEvent;
 import com.wordpress.marianbuenosayres.demo.client.i18n.Constants;
 
 @Dependent
@@ -85,10 +83,6 @@ public class MessageListViewImpl extends Composite implements MessageListPresent
         });
 
         messageListGrid.addColumn(messageTextColumn);
-    }
-
-    public void requestCreated( @Observes NewMessageEvent event ) {
-        presenter.refreshMessages();
     }
 
     @Override

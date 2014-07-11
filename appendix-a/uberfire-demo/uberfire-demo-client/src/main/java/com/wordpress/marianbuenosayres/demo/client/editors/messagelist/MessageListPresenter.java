@@ -2,7 +2,9 @@ package com.wordpress.marianbuenosayres.demo.client.editors.messagelist;
 
 import java.util.List;
 
+import javax.annotation.PostConstruct;
 import javax.enterprise.context.Dependent;
+import javax.enterprise.event.Observes;
 import javax.inject.Inject;
 
 import org.jboss.errai.bus.client.api.messaging.Message;
@@ -16,6 +18,8 @@ import org.uberfire.client.annotations.WorkbenchScreen;
 import org.uberfire.client.mvp.PlaceManager;
 import org.uberfire.client.mvp.UberView;
 import org.uberfire.lifecycle.OnOpen;
+import org.uberfire.lifecycle.OnStartup;
+import org.uberfire.mvp.PlaceRequest;
 import org.uberfire.mvp.Command;
 import org.uberfire.mvp.impl.DefaultPlaceRequest;
 import org.uberfire.workbench.model.menu.MenuFactory;
@@ -25,6 +29,7 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.cellview.client.DataGrid;
 import com.google.gwt.view.client.HasData;
 import com.google.gwt.view.client.ListDataProvider;
+import com.wordpress.marianbuenosayres.api.model.events.NewMessageEvent;
 import com.wordpress.marianbuenosayres.api.service.DemoServiceEntryPoint;
 import com.wordpress.marianbuenosayres.demo.client.i18n.Constants;
 
@@ -48,6 +53,8 @@ public class MessageListPresenter {
     private MessageListView view;
     
     private Menus menus;
+
+    private PlaceRequest place;
     
     @Inject
     private Caller<DemoServiceEntryPoint> demoService;
@@ -67,6 +74,17 @@ public class MessageListPresenter {
     public UberView<MessageListPresenter> getView() {
         return view;
     }
+
+    @PostConstruct
+    public void init() {
+        
+    }
+
+    @OnStartup
+    public void onStartup(final PlaceRequest place) {
+        this.place = place;
+    }
+
 
     public void refreshMessages() {
         demoService.call(new RemoteCallback<List<String>>() {
@@ -104,6 +122,10 @@ public class MessageListPresenter {
     @WorkbenchMenu
     public Menus getMenus() {
         return menus;
+    }
+
+    public void requestCreated( @Observes NewMessageEvent event ) {
+        refreshMessages();
     }
 
     private void makeMenuBar() {

@@ -15,6 +15,14 @@
 
   <dependencies>
     <dependency>
+      <groupId>org.uberfire</groupId>
+      <artifactId>uberfire-panel-manager-nswe</artifactId>
+      <version>${uberfire.version}</version>
+      <scope>provided</scope>
+    </dependency>
+
+
+    <dependency>
       <groupId>com.wordpress.marianbuenosayres</groupId>
       <artifactId>uberfire-demo-api</artifactId>
       <version>${project.version}</version>
@@ -23,12 +31,6 @@
     <dependency>
       <groupId>org.uberfire</groupId>
       <artifactId>uberfire-backend-api</artifactId>
-      <version>${uberfire.version}</version>
-    </dependency>
-
-    <dependency>
-      <groupId>org.uberfire</groupId>
-      <artifactId>uberfire-widgets-commons</artifactId>
       <version>${uberfire.version}</version>
     </dependency>
 
@@ -48,12 +50,14 @@
       <groupId>javax.inject</groupId>
       <artifactId>javax.inject</artifactId>
       <version>1</version>
+      <scope>provided</scope>
     </dependency>
 
     <dependency>
       <groupId>javax.enterprise</groupId>
       <artifactId>cdi-api</artifactId>
       <version>1.0-SP4</version>
+      <scope>provided</scope>
     </dependency>
 
     <!-- Errai Core -->
@@ -70,8 +74,6 @@
     </dependency>
     
     <!-- Errai UI -->
-
-
     <dependency>
       <groupId>org.jboss.errai</groupId>
       <artifactId>errai-ui</artifactId>
@@ -88,7 +90,7 @@
     <dependency>
       <groupId>com.google.gwt</groupId>
       <artifactId>gwt-user</artifactId>
-      <version>2.5.0</version>
+      <version>2.5.1</version>
     </dependency>
   </dependencies>
 
@@ -118,6 +120,61 @@
         </executions>
         <configuration>
           <attach>true</attach>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.felix</groupId>
+        <artifactId>maven-bundle-plugin</artifactId>
+        <version>2.3.7</version>
+        <extensions>true</extensions>
+        <configuration>
+          <excludeDependencies>true</excludeDependencies>
+          <instructions>
+            <_removeheaders>Ignore-Package</_removeheaders>
+            <_nouses>true</_nouses>
+            <_snapshot>qualifier</_snapshot>
+          </instructions>
+          <archive>
+            <index>true</index>
+            <manifest>
+              <addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
+              <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+            </manifest>
+          </archive>
+        </configuration>
+      </plugin>
+      <plugin>
+        <artifactId>maven-jar-plugin</artifactId>
+        <version>2.3.1</version>
+        <configuration>
+          <archive>
+            <manifest>
+              <addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
+              <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+            </manifest>
+            <index>true</index>
+          </archive>
+        </configuration>
+      </plugin>
+      <plugin>
+        <artifactId>maven-source-plugin</artifactId>
+        <version>2.1.2</version>
+        <executions>
+          <execution>
+            <id>attach-sources</id>
+            <goals>
+              <goal>jar</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <archive>
+            <index>true</index>
+            <manifest>
+              <addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
+              <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+            </manifest>
+          </archive>
         </configuration>
       </plugin>
     </plugins>

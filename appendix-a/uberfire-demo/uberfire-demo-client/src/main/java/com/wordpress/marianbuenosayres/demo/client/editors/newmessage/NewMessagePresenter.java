@@ -11,6 +11,7 @@ import org.uberfire.client.annotations.WorkbenchPartTitle;
 import org.uberfire.client.annotations.WorkbenchPartView;
 import org.uberfire.client.annotations.WorkbenchPopup;
 import org.uberfire.client.mvp.UberView;
+import org.uberfire.lifecycle.OnOpen;
 import org.uberfire.lifecycle.OnStartup;
 import org.uberfire.mvp.PlaceRequest;
 import org.uberfire.client.workbench.events.BeforeClosePlaceEvent;
@@ -42,9 +43,18 @@ public class NewMessagePresenter {
     public NewMessagePresenter() {
     }
 
+    @PostConstruct
+    public void init() {
+        
+    }
+
     @OnStartup
     public void onStartup( final PlaceRequest place ) {
         this.place = place;
+    }
+
+    @OnOpen
+    public void onOpen() {
     }
 
     @WorkbenchPartTitle
@@ -55,10 +65,6 @@ public class NewMessagePresenter {
     @WorkbenchPartView
     public UberView<NewMessagePresenter> getView() {
         return view;
-    }
-
-    @PostConstruct
-    public void init() {
     }
 
     public void sendMessage(String message) {

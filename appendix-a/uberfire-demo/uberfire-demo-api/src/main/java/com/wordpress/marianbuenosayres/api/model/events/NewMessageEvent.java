@@ -1,11 +1,9 @@
 package com.wordpress.marianbuenosayres.api.model.events;
 
-import java.io.Serializable;
-
 import org.jboss.errai.common.client.api.annotations.Portable;
 
 @Portable
-public class NewMessageEvent implements Serializable {
+public class NewMessageEvent {
 
     private String message;
 
