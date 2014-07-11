@@ -47,9 +47,9 @@
 
   <dependencies>
     <dependency>
-      <groupId>com.wordpress.marianbuenosayres</groupId>
-      <artifactId>jbpm-console-ng-showcase</artifactId>
-      <version>${project.version}</version>
+      <groupId>org.jbpm</groupId>
+      <artifactId>jbpm-console-ng-showcase-mod</artifactId>
+      <version>${kie.version}</version>
       <type>war</type>
     </dependency>
     <!-- External dependencies -->

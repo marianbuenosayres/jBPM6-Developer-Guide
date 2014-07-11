@@ -43,7 +43,7 @@
     </dependencySet>
     <dependencySet>
       <includes>
-        <include>com.wordpress.marianbuenosayres:jbpm-console-ng-showcase:war</include>
+        <include>org.jbpm:jbpm-console-ng-showcase-mod:war</include>
       </includes>
       <outputDirectory>.</outputDirectory>
       <unpack>true</unpack>
