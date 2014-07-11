@@ -1,0 +1,52 @@
+diff -r /opt/git/book_writing/console/Beta3/jbpm-console-ng-showcase/pom.xml /opt/git/droolsjbpm/droolsjbpm-6.1.0.Beta3/jbpm-console-ng/jbpm-console-ng-showcase/pom.xml
+27c27
+<     <artifactId>jbpm-console-ng-showcase</artifactId>
+---
+>     <artifactId>jbpm-console-ng-showcase-mod</artifactId>
+30,31c30,31
+<     <name>jBPM Console NG - Showcase</name>
+<     <description>jBPM Console NG - Showcase</description>
+---
+>     <name>jBPM Console NG - Showcase (Modified)</name>
+>     <description>jBPM Console NG - Showcase (Modified)</description>
+527a528,539
+>     <!-- STEP 1: WE ADD OUR DEPENDENCIES -->
+>     <dependency>
+>       <groupId>com.wordpress.marianbuenosayres</groupId>
+>       <artifactId>uberfire-demo-backend</artifactId>
+>       <version>1.0-SNAPSHOT</version>
+>     </dependency>
+>     <dependency>
+>       <groupId>com.wordpress.marianbuenosayres</groupId>
+>       <artifactId>uberfire-demo-client</artifactId>
+>       <version>1.0-SNAPSHOT</version>
+>     </dependency>
+> 
+633a641,645
+>             <!-- STEP 2: WE ADD THE COMPILE SOURCES ARTIFACTS -->
+>             <compileSourcesArtifact>com.wordpress.marianbuenosayres:uberfire-demo-api</compileSourcesArtifact>
+>             <compileSourcesArtifact>com.wordpress.marianbuenosayres:uberfire-demo-client</compileSourcesArtifact>
+> 
+diff -r /opt/git/book_writing/console/Beta3/jbpm-console-ng-showcase/src/main/java/org/jbpm/console/ng/client/ShowcaseEntryPoint.java /opt/git/droolsjbpm/droolsjbpm-6.1.0.Beta3/jbpm-console-ng/jbpm-console-ng-showcase/src/main/java/org/jbpm/console/ng/client/ShowcaseEntryPoint.java
+101a102,103
+>                 //STEP 4: WE ADD OUR LINK(S) TO THE NEW COMPONENT(S)
+>                 .newTopLevelMenu( "BOOK DEMO" ).withItems( getBookViews() ).endMenu()
+106a109,119
+>     }
+> 
+>     private List<? extends MenuItem> getBookViews() {
+>         final List<MenuItem> result = new ArrayList<MenuItem>( 1 );
+>         result.add( MenuFactory.newSimpleItem( "Message List Demo" ).respondsWith( new Command() {
+>             @Override
+>             public void execute() {
+>                 placeManager.goTo( new DefaultPlaceRequest( "BookDemoMessages" ) );
+>             }
+>         } ).endMenu().build().getItems().get( 0 ) );
+>         return result;
+diff -r /opt/git/book_writing/console/Beta3/jbpm-console-ng-showcase/src/main/resources/org/jbpm/console/ng/jBPMShowcase.gwt.xml /opt/git/droolsjbpm/droolsjbpm-6.1.0.Beta3/jbpm-console-ng/jbpm-console-ng-showcase/src/main/resources/org/jbpm/console/ng/jBPMShowcase.gwt.xml
+23a24
+>   <inherits name="org.kie.workbench.common.screens.defaulteditor.DroolsWorkbenchDefaultEditorClient"/>
+36a38,40
+>   <!-- STEP 3: WE ADD OUR GWT MODULES -->
+>   <inherits name="com.wordpress.marianbuenosayres.api.UberfireDemoAPI"/>
+>   <inherits name="com.wordpress.marianbuenosayres.demo.UberfireDemoClient"/>
