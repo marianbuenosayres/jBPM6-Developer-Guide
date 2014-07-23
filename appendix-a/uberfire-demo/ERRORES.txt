@@ -1,3 +1,0 @@
-Ver por que no carga la vista. Pedile ayuda a Horacio tal vez? Probalo con mvn gwt:run y /opt/git/apimg/firefox-26/firefox -P Firefox24
-
-SE CAMBIARION IDs, Y TODAVIA SIGUE TIRANDO NPE CUANDO TRATO DE ABRIR LA VISTA

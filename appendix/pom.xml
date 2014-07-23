@@ -9,8 +9,8 @@
     <version>1.0-SNAPSHOT</version>
   </parent>
   <packaging>pom</packaging>
-  <artifactId>appendix-a</artifactId>
-  <name>Appendix A</name>
+  <artifactId>appendix</artifactId>
+  <name>Appendix</name>
 
   <modules>
     <module>uberfire-demo</module>
