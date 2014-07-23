@@ -13,6 +13,7 @@
   <name>Chapter 07</name>
 
   <modules>
+    <module>base-kie-module</module>
     <module>singleton-runtime-manager</module>
     <module>per-process-instance-runtime-manager</module>
     <module>per-request-runtime-manager</module>

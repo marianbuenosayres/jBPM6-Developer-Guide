@@ -6,10 +6,8 @@ import java.util.Properties;
 
 import org.jbpm.runtime.manager.impl.SimpleRegisterableItemsFactory;
 import org.jbpm.services.task.identity.JBossUserGroupCallbackImpl;
-import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.kie.api.KieBase;
 import org.kie.api.KieServices;
@@ -32,7 +30,7 @@ public class PerProcessDefinitionRuntimeManagerTest {
 	
 	@Before
 	public void setUp() {
-		KieContainer kcontainer = KieServices.Factory.get().getKieClasspathContainer();
+		KieContainer kcontainer = KieServices.Factory.get().newKieClasspathContainer();
 		this.kbase = kcontainer.getKieBase();
         Properties userGroups = new Properties();
         userGroups.setProperty("john", "developers");
@@ -169,6 +167,6 @@ public class PerProcessDefinitionRuntimeManagerTest {
 		long processInstanceId2 = processInstance2.getId();
 		int sessionId2 = runtime2.getKieSession().getId();
 
-		Assert.assertFalse(sessionId1 == sessionId2);
+		Assert.assertFalse(runtime2.getKieSession().equals(runtime1.getKieSession()));
 	}
 }

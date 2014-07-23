@@ -35,7 +35,7 @@ public class PerRequestRuntimeManagerTest {
 	
 	@Before
 	public void setUp() {
-		KieContainer kcontainer = KieServices.Factory.get().getKieClasspathContainer();
+		KieContainer kcontainer = KieServices.Factory.get().newKieClasspathContainer();
 		this.kbase = kcontainer.getKieBase();
         Properties userGroups = new Properties();
         userGroups.setProperty("john", "developers");

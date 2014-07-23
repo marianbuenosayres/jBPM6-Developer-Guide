@@ -34,7 +34,7 @@ public class SingletonRuntimeManagerTest {
 	
 	@Before
 	public void setUp() {
-		KieContainer kcontainer = KieServices.Factory.get().getKieClasspathContainer();
+		KieContainer kcontainer = KieServices.Factory.get().newKieClasspathContainer();
 		this.kbase = kcontainer.getKieBase();
 		String location = System.getProperty("jbpm.data.dir", System.getProperty("jboss.server.data.dir"));
         if (location == null) {
