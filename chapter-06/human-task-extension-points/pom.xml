@@ -38,6 +38,11 @@
     </dependency>
     <!-- Dependencies for process execution -->
     <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>base-ht-kie-module</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
       <groupId>org.jbpm</groupId>
       <artifactId>jbpm-flow</artifactId>
       <version>${kie.version}</version>

@@ -85,7 +85,7 @@ public class HumanTaskInterceptorTest {
         // Create the KIE session
         KieServices ks = KieServices.Factory.get();
         KieContainer kc = ks.getKieClasspathContainer();
-        KieSession ksession = kc.newKieSession("ksession1");
+        KieSession ksession = kc.newKieSession();
 
         //create the work item handler for human task
         WorkItemHandler humanTaskHandler = new NonManagedLocalHTWorkItemHandler(ksession, taskService);

@@ -13,6 +13,7 @@
   <name>Chapter 06</name>
 
   <modules>
+    <module>base-ht-kie-module</module>
     <module>human-task-components-api</module>
     <module>human-task-extension-points</module>
   </modules>
